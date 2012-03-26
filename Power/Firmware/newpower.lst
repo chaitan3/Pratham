@@ -1,0 +1,1355 @@
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+               00001         list            p=16f877a       ; list directive to define processor
+               00002         #include        <p16f877a.inc>  ; processor specific variable definitions
+               00001         LIST
+               00002 ; P16F877A.INC  Standard Header File, Version 1.00    Microchip Technology, Inc.
+               00400         LIST
+               00003 
+               00004 ;write the config bits
+002007 3F32    00005     __CONFIG _CP_OFF & _WDT_OFF & _BODEN_OFF & _PWRTE_ON & _HS_OSC & _LVP_OFF & _CPD_OFF 
+               00006 
+               00007 ;TODO
+               00008 ;uplink
+               00009 
+               00010 cblock 0x20
+               00011         LoadStatus
+               00012 
+               00013         ;0x21 stores ADC HM data
+               00014         BatteryCurrent
+               00015         BatteryVoltage
+               00016         Panel
+               00017         SixVolt
+               00018         ThreeVolt
+               00019         
+               00020     ;Overvoltage and low power of battery
+               00021     BatteryStatus
+               00022     
+               00023     
+               00024         HMCounter
+               00025         
+               00026         ;variables required for adc: Don't use in interrupts
+               00027         Channel
+               00028         Count
+               00029         InverseCount
+               00030 
+               00031         ;variables required for OC
+               00032         Timer
+               00033         Timer7
+               00034         Timer6
+               00035         Timer5
+               00036         Timer4
+               00037         Timer3
+               00038 
+               00039         ;variables required for OBC Command
+               00040         CommandByte
+               00041         
+               00042         ;Variable for i2c byte status
+               00043         TWIByte
+               00044         
+               00045         ;Variable for Ejection State: Snap/Preflight
+               00046         State
+               00047         ;Variable for delays
+               00048         Delay
+               00049         
+               00050         endc
+               00051 
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+               00052 ;OBC Command Byte format
+  00000007     00053 BEACONPOWER equ 7
+  00000006     00054 PCONTROL equ 6
+  00000005     00055 PGPS equ 5
+  00000004     00056 PCC equ 4
+  00000003     00057 POBC equ 3
+  00000002     00058 PMAG equ 2
+               00059 
+  00000070     00060 w_temp equ 0x70 ; variable used for context saving
+  00000071     00061 status_temp equ 0x71 ; variable used for context saving
+  00000072     00062 fsr_temp equ 0x72
+               00063 
+  00000044     00064 I2C_ADDR equ 0x44
+               00065 
+               00066 
+               00067 CheckLoadTimer macro
+               00068 
+               00069         movf Timer, W
+               00070     subwf INDF,W
+               00071         btfss STATUS, Z
+               00072     
+               00073         endm
+               00074 
+               00075 TurnOnLoadOC macro  PORTW, COMPONENT
+               00076     
+               00077     bsf PORTW, COMPONENT
+               00078     bsf LoadStatus, COMPONENT
+               00079     
+               00080         endm
+               00081 
+               00082 TurnOffLoadOC macro PORTCHECK, COMPONENTCHECK
+               00083 
+               00084     bcf PORTCHECK, COMPONENTCHECK
+               00085     bcf LoadStatus, COMPONENTCHECK
+               00086     movf Timer, W
+               00087     movwf INDF
+               00088     
+               00089         endm
+               00090     
+               00091 CheckLoadOBC macro PORTW, COMPONENT
+               00092 
+               00093     btfss CommandByte, COMPONENT  
+               00094     bcf PORTW, COMPONENT
+               00095     btfsc CommandByte, COMPONENT
+               00096     bsf PORTW, COMPONENT
+               00097     
+               00098     endm
+               00099 
+               00100 
+0000           00101         org 0x0000
+               00102         
+0000 2873      00103         goto SleepMode
+               00104         
+0004           00105         org     0x004             ; interrupt vector location
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+               00106 
+0004 00F0      00107         movwf   w_temp            ; save off current W register contents
+0005 0803      00108         movf    STATUS, W          ; move status register into W register
+0006 00F1      00109         movwf   status_temp       ; save off contents of STATUS register
+0007 0804      00110         movf    FSR, W
+0008 00F2      00111         movwf   fsr_temp                ;save FSR register
+               00112         
+0009 1283 1303 00113         banksel ADCON0
+               00114         
+000B 198C      00115         btfsc PIR1, SSPIF
+000C 2017      00116         call I2CHandler   ; I2C receive interrupt
+               00117         
+000D 1283 1303 00118         banksel ADCON0
+               00119 
+000F 118C      00120         bcf PIR1, SSPIF
+0010 108B      00121         bcf INTCON, INTF
+               00122 
+0011 00123 ExitISR: 
+               00124 
+0011 0871      00125         movf    status_temp, W     ; retrieve copy of STATUS register
+0012 0083      00126         movwf   STATUS            ; restore pre-isr STATUS register contents
+0013 0872      00127         movf    fsr_temp, W     ; retrieve copy of FSR register
+0014 0084      00128         movwf   FSR            ; restore pre-isr FSR register contents
+0015 0870      00129         movf w_temp, W  ;restore pre-isr W register
+0016 0009      00130         retfie                    ; return from interrupt       
+               00131 
+0017 00132 I2CHandler:
+0017 0813      00133         movf SSPBUF, W
+               00134         ;Check Read/Write bit
+0018 1683 1303 00135     banksel ADCON1
+               00136    
+               00137         ;Check if last byte was Data or address
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+001A 1A94      00138         btfsc SSPSTAT, 5
+               00139         ;If it was Data call the OBC command response subroutine        
+001B 2831      00140         goto OBCCommandResponse
+               00141         
+               00142         ;If it was Address call the send HM data routine
+               00143 
+001C 00144 SendHMData:
+               00145         ;Check if Master in Read Mode
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+001C 1D14      00146         btfss SSPSTAT, 2
+001D 285F      00147         goto ExitI2C
+               00148 
+001E 1283 1303 00149     banksel ADCON0
+               00150   
+0020 3020      00151         movlw LoadStatus
+0021 0084      00152         movwf FSR
+               00153 
+               00154         ;Calculate address of next data byte
+0022 0827      00155         movf HMCounter, W
+0023 0784      00156         addwf FSR, f
+0024 0800      00157         movf INDF, W
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+               00158 
+0025 00159 WriteI2C:
+               00160         ;Send Data
+0025 1394      00161         bcf SSPCON, WCOL
+0026 0093      00162         movwf SSPBUF
+0027 1B94      00163         btfsc SSPCON, WCOL
+0028 2825      00164         goto WriteI2C
+               00165         
+               00166         ;Release Clock
+0029 0AB2      00167         incf TWIByte, f
+002A 1614      00168         bsf SSPCON, CKP
+               00169 
+               00170         ;Increment Counter, check if equal to 7 make it 0
+002B 0AA7      00171         incf HMCounter, f
+002C 3007      00172         movlw 7
+002D 0227      00173         subwf HMCounter, W
+002E 1903      00174         btfsc STATUS, Z
+002F 01A7      00175     clrf HMCounter
+               00176         
+0030 285F      00177         goto ExitI2C
+               00178 
+0031 00179 OBCCommandResponse:
+               00180         ;OBC Command format: Bit 7:0 
+               00181         ; Beacon : Control: GPS: CC : OBC : Reserved: Reserved: Reserved
+0031 1283 1303 00182     banksel ADCON0
+               00183     
+0033 1832      00184     btfsc TWIByte, 0
+0034 285E      00185     goto SkipI2CData
+               00186     
+               00187     ;Check if Load has been turned off by Power MuC even when it should be on according to the OBC
+0035 00B1      00188     movwf CommandByte
+0036 00A6      00189     movwf BatteryStatus
+0037 06A0      00190     xorwf LoadStatus, f
+               00191     
+               00192         
+               00193         ;Beacon
+0038 1FA0      00194         btfss LoadStatus, BEACONPOWER
+0039 283E      00195         goto SkipCheck7
+               00196         
+               00197     CheckLoadOBC PORTE, 0
+                   M 
+003A 1C31          M     btfss CommandByte, COMPONENT  
+003B 1009          M     bcf PORTW, COMPONENT
+003C 1831          M     btfsc CommandByte, COMPONENT
+003D 1409          M     bsf PORTW, COMPONENT
+                   M     
+               00198     
+003E 00199 SkipCheck7:
+               00200         ;Control
+003E 1F20      00201         btfss LoadStatus, PCONTROL
+003F 2844      00202         goto SkipCheck6
+               00203         
+               00204     CheckLoadOBC PORTC, 1
+                   M 
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+0040 1CB1          M     btfss CommandByte, COMPONENT  
+0041 1087          M     bcf PORTW, COMPONENT
+0042 18B1          M     btfsc CommandByte, COMPONENT
+0043 1487          M     bsf PORTW, COMPONENT
+                   M     
+               00205 
+0044 00206 SkipCheck6:
+               00207         ;GPS
+0044 1EA0      00208         btfss LoadStatus, PGPS
+0045 284A      00209         goto SkipCheck5
+               00210         
+               00211     CheckLoadOBC PORTC, 6
+                   M 
+0046 1F31          M     btfss CommandByte, COMPONENT  
+0047 1307          M     bcf PORTW, COMPONENT
+0048 1B31          M     btfsc CommandByte, COMPONENT
+0049 1707          M     bsf PORTW, COMPONENT
+                   M     
+               00212 
+004A 00213 SkipCheck5:
+               00214         ;CC
+004A 1E20      00215         btfss LoadStatus, PCC
+004B 2850      00216         goto SkipCheck4
+               00217         
+               00218     CheckLoadOBC PORTE, 2
+                   M 
+004C 1D31          M     btfss CommandByte, COMPONENT  
+004D 1109          M     bcf PORTW, COMPONENT
+004E 1931          M     btfsc CommandByte, COMPONENT
+004F 1509          M     bsf PORTW, COMPONENT
+                   M     
+               00219         
+0050 00220 SkipCheck4:
+               00221         ;OBC
+0050 1DA0      00222         btfss LoadStatus, POBC
+0051 2856      00223         goto SkipCheck3
+               00224         
+               00225     CheckLoadOBC PORTD, 2
+                   M 
+0052 1D31          M     btfss CommandByte, COMPONENT  
+0053 1108          M     bcf PORTW, COMPONENT
+0054 1931          M     btfsc CommandByte, COMPONENT
+0055 1508          M     bsf PORTW, COMPONENT
+                   M     
+               00226 
+0056 00227 SkipCheck3:
+               00228         ;MAG
+0056 1D20      00229         btfss LoadStatus, PMAG
+0057 285C      00230         goto SkipCheck2
+               00231         
+               00232     CheckLoadOBC PORTD, 5
+                   M 
+0058 1EB1          M     btfss CommandByte, COMPONENT  
+0059 1288          M     bcf PORTW, COMPONENT
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+005A 1AB1          M     btfsc CommandByte, COMPONENT
+005B 1688          M     bsf PORTW, COMPONENT
+                   M     
+               00233 
+005C 00234 SkipCheck2:
+               00235         ;Copy CommandByte to LoadStatus
+005C 0831      00236         movf CommandByte, W
+005D 00A0      00237         movwf LoadStatus
+               00238 
+005E 00239 SkipI2CData:
+005E 01B2      00240         clrf TWIByte
+               00241 
+005F 00242 ExitI2C:
+005F 0000      00243         nop
+0060 0008      00244         return
+               00245 
+0061 00246 Shutdown:
+               00247   ; Kill. all loads
+0061 1009      00248         bcf PORTE, 0
+0062 1087      00249         bcf PORTC, 1
+0063 1307      00250         bcf PORTC, 6
+0064 1109      00251         bcf PORTE, 2
+0065 1108      00252         bcf PORTD, 2
+0066 1288      00253         bcf PORTD, 5
+0067 0008      00254         return
+               00255         
+0068 00256 DelayS:
+0068 0834      00257         movf Delay, W
+0069 00E2      00258         movwf 0x62
+006A 00259 Delay3:
+006A 01E1      00260         clrf 0x61
+006B 00261 Delay2:
+006B 01E0      00262         clrf 0x60
+006C 00263 Delay1:
+006C 0FE0      00264         incfsz 0x60, f
+006D 286C      00265         goto Delay1
+               00266         
+006E 0FE1      00267         incfsz 0x61, f
+006F 286B      00268         goto Delay2
+               00269 
+0070 0BE2      00270         decfsz 0x62, f
+0071 286A      00271         goto Delay3
+               00272         
+0072 0008      00273         return
+               00274 
+0073 00275 SleepMode:
+               00276 
+0073 1683 1303 00277         banksel ADCON1
+               00278         ;set RB0 as input for SNAP
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+0075 1406      00279         bsf TRISB, 0
+               00280         
+               00281         ;set RC2 as input for Preflight
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+0076 1507      00282     bsf TRISC, 2
+               00283     ;enable interrupt for Preflight
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+0077 150C      00284     bsf PIE1, CCP1IE
+               00285     
+               00286         
+               00287         ;enable output on the loads lines
+               00288 
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+0078 1087      00289         bcf TRISC, 1
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+0079 1307      00290         bcf TRISC, 6
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+007A 1009      00291         bcf TRISE, 0
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+007B 1109      00292   bcf TRISE, 2
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+007C 1108      00293         bcf TRISD, 2
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+007D 1288      00294         bcf TRISD, 5
+               00295         
+007E 1283 1303 00296         banksel ADCON0
+               00297         
+               00298         ;configure Preflight Interrupt
+0080 3005      00299         movlw 0x05
+0081 0097      00300     movwf CCP1CON
+               00301     
+               00302     ;switch off all loads
+0082 2061      00303     call Shutdown
+               00304     
+               00305         
+               00306         ;switch on the INT interrupt for wake up from sleep
+0083 170B      00307         bsf INTCON, PEIE
+               00308   
+0084 160B      00309         bsf INTCON, INTE
+0085 178B      00310         bsf INTCON, GIE 
+0086 108B      00311         bcf INTCON, INTF
+0087 110C      00312     bcf PIR1, CCP1IF
+               00313  
+0088 00314 RealSleep:   
+0088 0063      00315         sleep
+               00316         
+0089 0000      00317         nop
+               00318         
+               00319         ;2 second delay to confirm that the interrupt is not a fake
+008A 3020      00320         movlw 20
+008B 00B4      00321         movwf Delay
+008C 2068      00322         call DelayS
+               00323         
+               00324         ;Check Snap pin
+008D 1806      00325         btfsc PORTB, 0
+008E 2892      00326         goto Snap
+               00327         
+               00328         ;Check Preflight Pin
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+008F 1907      00329         btfsc PORTC, 2
+0090 2894      00330         goto Preflight
+               00331         
+0091 2888      00332         goto RealSleep
+               00333         
+0092 00334 Snap:
+               00335         ;Implement the Eject Delay
+               00336         
+0092 01B3      00337         clrf State
+0093 2896      00338         goto Start
+               00339         
+0094 00340 Preflight:
+0094 30FF      00341         movlw 0xFF
+0095 00B3      00342         movwf State
+               00343 
+0096 00344 Start: 
+0096 1683 1303 00345         banksel ADCON1
+               00346         
+               00347     ;enable input on the batterystatus lines
+               00348     ;bsf TRISD, 7
+               00349     ;bsf TRISD, 6
+               00350     ;bsf TRISD, 5
+               00351     ;bsf TRISB, 3
+               00352     ;bsf TRISB, 2
+               00353     ;bsf TRISB, 1
+               00354     
+               00355     ;enable input on the Uplink lines
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+0098 1686      00356     bsf TRISB, 5
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+0099 1606      00357         bsf TRISB, 4
+               00358         
+               00359         ;configure ADC
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+009A 019F      00360         clrf ADCON1
+               00361 
+               00362         ;set ADC ports as input 
+009B 30FF      00363         movlw 0xFF
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+009C 0085      00364         movwf TRISA
+               00365 
+               00366         ;confugure I2C
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+009D 0194      00367         clrf SSPSTAT
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+009E 0191      00368         clrf SSPCON2
+               00369         ;configure address of I2C slave
+009F 3044      00370     movlw I2C_ADDR
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+00A0 0093      00371     movwf SSPADD
+               00372 
+               00373         ;configure I2C ports as Input
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+00A1 1587      00374         bsf TRISC, 3
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+00A2 1607      00375         bsf TRISC, 4
+               00376         
+               00377         
+               00378         ;enable input on the OC lines
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+00A3 1408      00379         bsf TRISD, 0 ;PCONTROL
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+00A4 1787      00380         bsf TRISC, 7 ;GPS
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+00A5 1588      00381         bsf TRISD, 3 ;OBC
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+00A6 1489      00382         bsf TRISE, 1 ;Beacon
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+00A7 1407      00383         bsf TRISC, 0 ;CC
+               00384 
+               00385         ;Enable SSP/I2C interrupt
+Message [302] : Register in operand not in bank 0. Ensure bank bits are correct.
+00A8 158C      00386         bsf PIE1, SSPIE
+               00387 
+00A9 1283 1303 00388         banksel ADCON0  
+               00389     
+               00390     ;switch on the components
+               00391 
+00AB 1409      00392     bsf PORTE, 0
+00AC 1508      00393     bsf PORTD, 2
+00AD 1487      00394     bsf PORTC, 1
+               00395     
+               00396 
+00AE 30C8      00397         movlw b'11001000'
+00AF 00A0      00398         movwf LoadStatus
+00B0 00B1      00399     movwf CommandByte
+               00400 
+               00401         
+               00402         ;configure I2C
+               00403 
+00B1 3036      00404         movlw 0x36
+00B2 0094      00405         movwf SSPCON
+               00406         
+               00407         ;Clear I2C interrupt flag
+00B3 018C      00408         clrf PIR1
+               00409 
+               00410         ;Timer for OC and main Loop
+00B4 01AB      00411         clrf Timer
+00B5 01A7      00412         clrf HMCounter
+               00413         
+00B6 01A6      00414         clrf BatteryStatus
+00B7 01B2      00415         clrf TWIByte
+               00416 
+               00417 ;main loop
+00B8 00418 Loop:
+               00419 
+               00420         ;Uplink check
+00B8 1E86      00421         btfss PORTB, 5
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+00B9 28C6      00422         goto SkipUplink
+               00423         
+               00424         ;2 second delay to confirm that the interrupt is not a fake
+00BA 3020      00425         movlw 20
+00BB 00B4      00426         movwf Delay
+00BC 2068      00427         call DelayS
+               00428         
+               00429         ;Test Interrupt pin
+00BD 1E86      00430         btfss PORTB, 5
+00BE 28C6      00431         goto SkipUplink
+               00432         
+               00433         ;Check data line, if high Kill satellite
+00BF 1A06      00434         btfsc PORTB, 4
+00C0 295B      00435         goto Kill
+               00436         
+               00437         ;Low: Reset
+00C1 2061      00438         call Shutdown
+               00439         
+               00440         ;0.5 second Delay for components to shutdown
+00C2 3005      00441         movlw 5
+00C3 00B4      00442         movwf Delay
+00C4 2068      00443         call DelayS
+               00444         
+00C5 2896      00445         goto Start
+               00446 
+00C6 00447 SkipUplink:
+               00448 
+               00449         ;Check State variable for preflight check
+               00450         ;Counter for looping 8 times
+00C6 3008      00451         movlw 0x08
+00C7 00AA      00452         movwf InverseCount
+               00453         ;Counter for number of high bits in State variable
+00C8 01A9      00454         clrf Count
+               00455         ;Copy State variable to a temp variable
+00C9 0833      00456         movf State, W
+00CA 00A8      00457         movwf Channel
+00CB 00458 BitCheck:
+               00459         ;Extract Bit and Check if high, increment Count
+00CB 1828      00460         btfsc Channel, 0
+00CC 0AA9      00461         incf Count, f
+               00462         ;Do right Shift to get the next bit
+00CD 0CA8      00463         rrf Channel, f
+               00464         ;Decrement Loop counter and exit loop if it becomes 0
+00CE 0BAA      00465         decfsz InverseCount, f
+00CF 28CB      00466         goto BitCheck
+               00467         
+               00468         ;Compare the bit counter with 4
+00D0 3004      00469         movlw 0x04
+00D1 0229      00470         subwf Count, W
+               00471         ;Skip Check if in Snap mode
+00D2 1C03      00472         btfss STATUS, C
+00D3 28D6      00473         goto SkipPreflight
+               00474         
+               00475         ;Check if Preflight pin is still high
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+00D4 1D07      00476         btfss PORTC, 2
+00D5 2873      00477         goto SleepMode
+               00478         
+00D6 00479 SkipPreflight:
+               00480         ;counter for 5 ADC inputs       
+00D6 3005      00481         movlw 0x05
+               00482         
+00D7 00A9      00483         movwf Count
+               00484         
+00D8 01AA      00485         clrf InverseCount
+               00486         
+               00487         ;set indirect address
+00D9 3021      00488         movlw BatteryCurrent
+00DA 0084      00489         movwf FSR
+               00490 
+00DB 00491 ADCLoop:
+               00492         ;select Channel in ADCON0
+00DB 082A      00493         movf InverseCount,W
+00DC 00A8      00494         movwf Channel
+00DD 1003      00495         bcf STATUS, C
+               00496         
+00DE 0DA8      00497         rlf Channel,f
+00DF 0DA8      00498         rlf Channel,f
+00E0 0DA8      00499         rlf Channel,f
+               00500         
+00E1 0828      00501         movf Channel, W
+00E2 3881      00502         iorlw 0x81
+00E3 009F      00503         movwf ADCON0
+               00504         
+               00505         ;Small delay for ADC
+00E4 3003      00506         movlw 0x03
+00E5 00E1      00507         movwf 0x61
+00E6 00508 Delay5:
+00E6 01E0      00509         clrf 0x60
+00E7 00510 Delay4:
+00E7 0FE0      00511         incfsz 0x60, f
+00E8 28E7      00512         goto Delay4
+               00513         
+00E9 0BE1      00514         decfsz 0x61, f
+00EA 28E6      00515         goto Delay5
+               00516         
+00EB 081F      00517         movf ADCON0, W
+               00518 
+               00519         ;start conversion
+00EC 151F      00520         bsf ADCON0, GO
+00ED 00521 ADCWait:
+00ED 191F      00522         btfsc ADCON0,GO
+00EE 28ED      00523         goto ADCWait
+               00524         
+00EF 081E      00525         movf ADRESH, W
+               00526         
+00F0 0080      00527         movwf INDF      
+               00528 
+00F1 0AAA      00529         incf InverseCount, f
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 12
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+00F2 0A84      00530         incf FSR, f
+00F3 0BA9      00531         decfsz Count, f
+00F4 28DB      00532         goto ADCLoop
+               00533         
+               00534         ;OC code
+               00535         ;If component switched off and it should be on according to the OBC:
+               00536         ;Check the Components timer, if 1 min is over, to switch it on again
+               00537     ;confirm if component is switched off oc pin is high
+00F5 0831      00538         movf CommandByte, W
+00F6 0620      00539         xorwf LoadStatus, W
+               00540         ;check if Load is off and OBC wants it on
+00F7 00A8      00541         movwf Channel
+               00542         
+               00543     ;Storing address of Timer for future reference of the temporary timers of the Loads
+00F8 302B      00544     movlw Timer
+00F9 0084      00545     movwf FSR
+               00546     
+00FA 0A84      00547     incf FSR, f
+               00548     
+00FB 1FA8      00549     btfss Channel, BEACONPOWER
+00FC 2903      00550     goto SkipOn7
+               00551     ;Compare Timer and temporary Timer
+               00552     CheckLoadTimer
+                   M 
+00FD 082B          M         movf Timer, W
+00FE 0200          M     subwf INDF,W
+00FF 1D03          M         btfss STATUS, Z
+                   M     
+               00553     
+0100 2903      00554     goto SkipOn7
+               00555     ;If equal Turn on the Load
+               00556     TurnOnLoadOC PORTE, 0
+                   M     
+0101 1409          M     bsf PORTW, COMPONENT
+0102 1420          M     bsf LoadStatus, COMPONENT
+                   M     
+               00557     
+0103 00558 SkipOn7:
+0103 0A84      00559     incf FSR, f
+               00560     
+0104 1F28      00561         btfss Channel, PCONTROL
+0105 290C      00562     goto SkipOn6
+               00563     
+               00564     CheckLoadTimer
+                   M 
+0106 082B          M         movf Timer, W
+0107 0200          M     subwf INDF,W
+0108 1D03          M         btfss STATUS, Z
+                   M     
+               00565     
+0109 290C      00566     goto SkipOn6
+               00567     
+               00568     TurnOnLoadOC PORTC, 1
+                   M     
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 13
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+010A 1487          M     bsf PORTW, COMPONENT
+010B 14A0          M     bsf LoadStatus, COMPONENT
+                   M     
+               00569     
+010C 00570 SkipOn6:
+010C 0A84      00571     incf FSR, f
+               00572 
+010D 1EA8      00573     btfss Channel, PGPS
+010E 2915      00574     goto SkipOn5
+               00575     
+               00576     CheckLoadTimer
+                   M 
+010F 082B          M         movf Timer, W
+0110 0200          M     subwf INDF,W
+0111 1D03          M         btfss STATUS, Z
+                   M     
+               00577     
+0112 2915      00578     goto SkipOn5
+               00579     
+               00580     TurnOnLoadOC PORTC, 6
+                   M     
+0113 1707          M     bsf PORTW, COMPONENT
+0114 1720          M     bsf LoadStatus, COMPONENT
+                   M     
+               00581     
+0115 00582 SkipOn5:
+0115 0A84      00583     incf FSR, f
+               00584 
+0116 1E28      00585     btfss Channel, PCC
+0117 291E      00586     goto SkipOn4
+               00587     
+               00588     CheckLoadTimer
+                   M 
+0118 082B          M         movf Timer, W
+0119 0200          M     subwf INDF,W
+011A 1D03          M         btfss STATUS, Z
+                   M     
+               00589     
+011B 291E      00590     goto SkipOn4
+               00591     
+               00592     TurnOnLoadOC PORTE, 2
+                   M     
+011C 1509          M     bsf PORTW, COMPONENT
+011D 1520          M     bsf LoadStatus, COMPONENT
+                   M     
+               00593     
+011E 00594 SkipOn4:
+011E 0A84      00595     incf FSR, f
+               00596 
+011F 1DA8      00597     btfss Channel, POBC
+0120 2927      00598     goto SkipOn3
+               00599     
+               00600     CheckLoadTimer
+                   M 
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 14
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+0121 082B          M         movf Timer, W
+0122 0200          M     subwf INDF,W
+0123 1D03          M         btfss STATUS, Z
+                   M     
+               00601     
+0124 2927      00602     goto SkipOn3
+               00603     
+               00604     TurnOnLoadOC PORTD, 2
+                   M     
+0125 1508          M     bsf PORTW, COMPONENT
+0126 1520          M     bsf LoadStatus, COMPONENT
+                   M     
+               00605     
+0127 00606 SkipOn3:
+               00607         
+               00608         ;check if OC pin is low: if low switch off the Load and set it's timer
+               00609     
+0127 302B      00610     movlw Timer
+0128 0084      00611     movwf FSR
+               00612     
+0129 0A84      00613     incf FSR, f
+               00614     ;BEACONPOWER
+               00615     ;skip check if load is turned off
+012A 1C09      00616     btfss PORTE, 0
+012B 2932      00617     goto SkipOff7
+012C 1889      00618     btfsc PORTE, 1
+012D 2932      00619     goto SkipOff7
+               00620 
+               00621     TurnOffLoadOC PORTE, 0
+                   M 
+012E 1009          M     bcf PORTCHECK, COMPONENTCHECK
+012F 1020          M     bcf LoadStatus, COMPONENTCHECK
+0130 082B          M     movf Timer, W
+0131 0080          M     movwf INDF
+                   M     
+               00622     
+0132 00623 SkipOff7:
+0132 0A84      00624     incf FSR, f
+               00625         
+               00626                 ;PCONTROL
+0133 1C87      00627     btfss PORTC, 1
+0134 293B      00628     goto SkipOff6
+               00629         
+               00630         
+0135 1808      00631     btfsc PORTD, 0
+0136 293B      00632     goto SkipOff6
+               00633     
+               00634     TurnOffLoadOC PORTC, 1
+                   M 
+0137 1087          M     bcf PORTCHECK, COMPONENTCHECK
+0138 10A0          M     bcf LoadStatus, COMPONENTCHECK
+0139 082B          M     movf Timer, W
+013A 0080          M     movwf INDF
+                   M     
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 15
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+               00635     
+013B 00636 SkipOff6:
+013B 0A84      00637     incf FSR, f
+               00638 
+               00639     ;PGPS
+013C 1F07      00640     btfss PORTC, 6
+013D 2944      00641     goto SkipOff5
+               00642     
+013E 1B87      00643     btfsc PORTC, 7
+013F 2944      00644     goto SkipOff5
+               00645     
+               00646     TurnOffLoadOC PORTC, 6
+                   M 
+0140 1307          M     bcf PORTCHECK, COMPONENTCHECK
+0141 1320          M     bcf LoadStatus, COMPONENTCHECK
+0142 082B          M     movf Timer, W
+0143 0080          M     movwf INDF
+                   M     
+               00647     
+0144 00648 SkipOff5:
+0144 0A84      00649     incf FSR, f
+               00650     
+               00651     ;PCC
+0145 1D09      00652     btfss PORTE, 2
+0146 294D      00653     goto SkipOff4
+               00654     
+0147 1807      00655     btfsc PORTC, 0
+0148 294D      00656     goto SkipOff4
+               00657     
+               00658     TurnOffLoadOC PORTE, 2
+                   M 
+0149 1109          M     bcf PORTCHECK, COMPONENTCHECK
+014A 1120          M     bcf LoadStatus, COMPONENTCHECK
+014B 082B          M     movf Timer, W
+014C 0080          M     movwf INDF
+                   M     
+               00659     
+014D 00660 SkipOff4:
+014D 0A84      00661     incf FSR, f
+               00662 
+               00663     ;POBC
+014E 1D08      00664     btfss PORTD, 2
+014F 2956      00665     goto SkipOff3   
+               00666 
+0150 1988      00667     btfsc PORTD, 3
+0151 2956      00668     goto SkipOff3
+               00669     
+               00670     TurnOffLoadOC PORTD, 2
+                   M 
+0152 1108          M     bcf PORTCHECK, COMPONENTCHECK
+0153 1120          M     bcf LoadStatus, COMPONENTCHECK
+0154 082B          M     movf Timer, W
+0155 0080          M     movwf INDF
+                   M     
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 16
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+               00671     
+0156 00672 SkipOff3:
+               00673 
+               00674     ;Overvoltage and low power bits in BatteryStatus
+               00675     ;LP2 OV3 LP3 - OV1 LP1 OV2 -
+               00676     ;clrf BatteryStatus
+               00677     ;movlw b'11100000'
+               00678     ;andwf PORTD, W
+               00679     ;movwf BatteryStatus
+               00680     
+               00681     ;movlw b'00001110'
+               00682     ;andwf PORTB, W
+               00683     ;iorwf BatteryStatus, f
+               00684     
+               00685     ;Safe Mode check: If Battery Voltage drops below 3.2 V power off PCONTROL, PGPS, PCC: ADC Value is VBAT/2
+               00686     
+               00687     ;movlw 0x29      ;(VBat/2)*(255/5)
+               00688     ;subwf BatteryVoltage, W
+               00689     ;btfsc STATUS, C
+               00690     ;goto SkipSafeMode
+               00691     
+               00692     ;check whether it will be switched by the OC code
+               00693     ;bcf PORTC, PCONTROL
+               00694     ;bcf PORTC, PGPS
+               00695     ;bcf PORTD, PCC
+               00696     
+               00697     ;bcf LoadStatus, PCONTROL
+               00698     ;bcf LoadStatus, PGPS
+               00699     ;bcf LoadStatus, PCC
+               00700     
+0156 00701 SkipSafeMode:
+               00702 
+               00703         ;increment timer required for OC
+0156 0AAB      00704         incf Timer, f
+               00705         
+               00706         ;0.2 second delay for the main loop
+0157 3002      00707         movlw 2
+0158 00B4      00708         movwf Delay
+0159 2068      00709         call DelayS
+               00710 
+015A 28B8      00711         goto Loop
+               00712 
+015B 00713 Kill:
+015B 2061      00714         call Shutdown
+               00715          
+015C 00716 EndLoop
+015C 0000      00717         nop
+015D 295C      00718         goto EndLoop
+               00719         
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 17
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCLoop                           000000DB
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADCS2                             00000006
+ADCWait                           000000ED
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BCLIE                             00000003
+BCLIF                             00000003
+BEACONPOWER                       00000007
+BF                                00000000
+BRGH                              00000002
+BatteryCurrent                    00000021
+BatteryStatus                     00000026
+BatteryVoltage                    00000022
+BitCheck                          000000CB
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 18
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CIS                               00000003
+CKE                               00000006
+CKP                               00000004
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000009C
+CMIE                              00000006
+CMIF                              00000006
+CREN                              00000004
+CSRC                              00000007
+CVR0                              00000000
+CVR1                              00000001
+CVR2                              00000002
+CVR3                              00000003
+CVRCON                            0000009D
+CVREN                             00000007
+CVROE                             00000006
+CVRR                              00000005
+Channel                           00000028
+CommandByte                       00000031
+Count                             00000029
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+D_A                               00000005
+Delay                             00000034
+Delay1                            0000006C
+Delay2                            0000006B
+Delay3                            0000006A
+Delay4                            000000E7
+Delay5                            000000E6
+DelayS                            00000068
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+EndLoop                           0000015C
+ExitI2C                           0000005F
+ExitISR                           00000011
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 19
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+GO_DONE                           00000002
+HMCounter                         00000027
+I2CHandler                        00000017
+I2C_ADDR                          00000044
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IBF                               00000007
+IBOV                              00000005
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+InverseCount                      0000002A
+Kill                              0000015B
+LoadStatus                        00000020
+Loop                              000000B8
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+OBCCommandResponse                00000031
+OBF                               00000006
+OERR                              00000001
+OPTION_REG                        00000081
+P                                 00000004
+PCC                               00000004
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PCONTROL                          00000006
+PEIE                              00000006
+PEN                               00000002
+PGPS                              00000005
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 20
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+PIR2                              0000000D
+PMAG                              00000002
+POBC                              00000003
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSPIE                             00000007
+PSPIF                             00000007
+PSPMODE                           00000004
+Panel                             00000023
+Preflight                         00000094
+R                                 00000002
+RBIE                              00000003
+RBIF                              00000000
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_W                               00000002
+RealSleep                         00000088
+S                                 00000003
+SEN                               00000000
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 21
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+SYNC                              00000004
+SendHMData                        0000001C
+Shutdown                          00000061
+SixVolt                           00000024
+SkipCheck2                        0000005C
+SkipCheck3                        00000056
+SkipCheck4                        00000050
+SkipCheck5                        0000004A
+SkipCheck6                        00000044
+SkipCheck7                        0000003E
+SkipI2CData                       0000005E
+SkipOff3                          00000156
+SkipOff4                          0000014D
+SkipOff5                          00000144
+SkipOff6                          0000013B
+SkipOff7                          00000132
+SkipOn3                           00000127
+SkipOn4                           0000011E
+SkipOn5                           00000115
+SkipOn6                           0000010C
+SkipOn7                           00000103
+SkipPreflight                     000000D6
+SkipSafeMode                      00000156
+SkipUplink                        000000C6
+SleepMode                         00000073
+Snap                              00000092
+Start                             00000096
+State                             00000033
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 22
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISB                             00000086
+TRISC                             00000087
+TRISD                             00000088
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRMT                              00000001
+TWIByte                           00000032
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+ThreeVolt                         00000025
+Timer                             0000002B
+Timer3                            00000030
+Timer4                            0000002F
+Timer5                            0000002E
+Timer6                            0000002D
+Timer7                            0000002C
+UA                                00000001
+W                                 00000000
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+WriteI2C                          00000025
+Z                                 00000002
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00001FFF
+_CP_OFF                           00003FFF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_HS_OSC                           00003FFE
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+gpasm-0.13.7 beta               newpower.asm8-24-2011  01:11:23          PAGE 23
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+ 
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_1FOURTH                      00003BFF
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FFD
+__16F877A                         00000001
+fsr_temp                          00000072
+status_temp                       00000071
+w_temp                            00000070
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+00000000 : X---XXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+00000040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+00000080 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+000000c0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+00000100 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+00000140 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXX-- ---------------- ----------------
+00002000 : -------X-------- ---------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used: 348
+
+
+Errors   :       0
+Warnings :       0 reported,       0 suppressed
+Messages :      26 reported,       0 suppressed
+

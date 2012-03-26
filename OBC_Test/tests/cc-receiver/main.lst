@@ -1,0 +1,428 @@
+GAS LISTING /tmp/ccEiLSTx.s 			page 1
+
+
+   1               		.file	"main.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.global __do_copy_data
+   8               		.global __do_clear_bss
+   9               		.stabs	"/data/programs/satellite/OBC_Test/tests/cc-receiver/",100,0,2,.Ltext0
+  10               		.stabs	"main.c",100,0,2,.Ltext0
+  11               		.text
+  12               	.Ltext0:
+  13               		.stabs	"gcc2_compiled.",60,0,0,0
+  14               		.stabs	"int:t(0,1)=r(0,1);-32768;32767;",128,0,0,0
+  15               		.stabs	"char:t(0,2)=@s8;r(0,2);0;255;",128,0,0,0
+  16               		.stabs	"long int:t(0,3)=@s32;r(0,3);020000000000;017777777777;",128,0,0,0
+  17               		.stabs	"unsigned int:t(0,4)=r(0,4);0;0177777;",128,0,0,0
+  18               		.stabs	"long unsigned int:t(0,5)=@s32;r(0,5);0;037777777777;",128,0,0,0
+  19               		.stabs	"long long int:t(0,6)=@s64;r(0,6);01000000000000000000000;0777777777777777777777;",128,0,0,
+  20               		.stabs	"long long unsigned int:t(0,7)=@s64;r(0,7);0;01777777777777777777777;",128,0,0,0
+  21               		.stabs	"short int:t(0,8)=r(0,8);-32768;32767;",128,0,0,0
+  22               		.stabs	"short unsigned int:t(0,9)=r(0,9);0;0177777;",128,0,0,0
+  23               		.stabs	"signed char:t(0,10)=@s8;r(0,10);-128;127;",128,0,0,0
+  24               		.stabs	"unsigned char:t(0,11)=@s8;r(0,11);0;255;",128,0,0,0
+  25               		.stabs	"float:t(0,12)=r(0,1);4;0;",128,0,0,0
+  26               		.stabs	"double:t(0,13)=r(0,1);4;0;",128,0,0,0
+  27               		.stabs	"long double:t(0,14)=r(0,1);4;0;",128,0,0,0
+  28               		.stabs	"void:t(0,15)=(0,15)",128,0,0,0
+  29               		.stabs	"common.h",130,0,0,0
+  30               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/avr/io.h",130,0,0,0
+  31               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/avr/sfr_defs.h",130,0,0,0
+  32               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/inttypes.h",130,0,0,0
+  33               		.stabs	"/usr/lib/gcc/avr/4.6.1/include/stdint.h",130,0,0,0
+  34               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/stdint.h",130,0,0,0
+  35               		.stabs	"int8_t:t(6,1)=(0,10)",128,0,121,0
+  36               		.stabs	"uint8_t:t(6,2)=(0,11)",128,0,122,0
+  37               		.stabs	"int16_t:t(6,3)=(0,1)",128,0,123,0
+  38               		.stabs	"uint16_t:t(6,4)=(0,4)",128,0,124,0
+  39               		.stabs	"int32_t:t(6,5)=(0,3)",128,0,125,0
+  40               		.stabs	"uint32_t:t(6,6)=(0,5)",128,0,126,0
+  41               		.stabs	"int64_t:t(6,7)=(0,6)",128,0,128,0
+  42               		.stabs	"uint64_t:t(6,8)=(0,7)",128,0,129,0
+  43               		.stabs	"intptr_t:t(6,9)=(6,3)",128,0,142,0
+  44               		.stabs	"uintptr_t:t(6,10)=(6,4)",128,0,147,0
+  45               		.stabs	"int_least8_t:t(6,11)=(6,1)",128,0,159,0
+  46               		.stabs	"uint_least8_t:t(6,12)=(6,2)",128,0,164,0
+  47               		.stabs	"int_least16_t:t(6,13)=(6,3)",128,0,169,0
+  48               		.stabs	"uint_least16_t:t(6,14)=(6,4)",128,0,174,0
+  49               		.stabs	"int_least32_t:t(6,15)=(6,5)",128,0,179,0
+  50               		.stabs	"uint_least32_t:t(6,16)=(6,6)",128,0,184,0
+  51               		.stabs	"int_least64_t:t(6,17)=(6,7)",128,0,192,0
+  52               		.stabs	"uint_least64_t:t(6,18)=(6,8)",128,0,199,0
+  53               		.stabs	"int_fast8_t:t(6,19)=(6,1)",128,0,213,0
+  54               		.stabs	"uint_fast8_t:t(6,20)=(6,2)",128,0,218,0
+  55               		.stabs	"int_fast16_t:t(6,21)=(6,3)",128,0,223,0
+  56               		.stabs	"uint_fast16_t:t(6,22)=(6,4)",128,0,228,0
+  57               		.stabs	"int_fast32_t:t(6,23)=(6,5)",128,0,233,0
+GAS LISTING /tmp/ccEiLSTx.s 			page 2
+
+
+  58               		.stabs	"uint_fast32_t:t(6,24)=(6,6)",128,0,238,0
+  59               		.stabs	"int_fast64_t:t(6,25)=(6,7)",128,0,246,0
+  60               		.stabs	"uint_fast64_t:t(6,26)=(6,8)",128,0,253,0
+  61               		.stabs	"intmax_t:t(6,27)=(6,7)",128,0,273,0
+  62               		.stabs	"uintmax_t:t(6,28)=(6,8)",128,0,278,0
+  63               		.stabn	162,0,0,0
+  64               		.stabn	162,0,0,0
+  65               		.stabs	"int_farptr_t:t(4,1)=(6,5)",128,0,77,0
+  66               		.stabs	"uint_farptr_t:t(4,2)=(6,6)",128,0,81,0
+  67               		.stabn	162,0,0,0
+  68               		.stabn	162,0,0,0
+  69               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/avr/fuse.h",130,0,0,0
+  70               		.stabs	"__fuse_t:t(7,1)=(7,2)=s2low:(0,11),0,8;high:(0,11),8,8;;",128,0,252,0
+  71               		.stabn	162,0,0,0
+  72               		.stabn	162,0,0,0
+  73               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/stdlib.h",130,0,0,0
+  74               		.stabs	"/usr/lib/gcc/avr/4.6.1/include/stddef.h",130,0,0,0
+  75               		.stabs	"size_t:t(9,1)=(0,4)",128,0,212,0
+  76               		.stabs	"wchar_t:t(9,2)=(0,1)",128,0,324,0
+  77               		.stabn	162,0,0,0
+  78               		.stabs	"div_t:t(8,1)=(8,2)=s4quot:(0,1),0,16;rem:(0,1),16,16;;",128,0,71,0
+  79               		.stabs	"ldiv_t:t(8,3)=(8,4)=s8quot:(0,3),0,32;rem:(0,3),32,32;;",128,0,77,0
+  80               		.stabs	"__compar_fn_t:t(8,5)=(8,6)=*(8,7)=f(0,1)",128,0,80,0
+  81               		.stabn	162,0,0,0
+  82               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/stdio.h",130,0,0,0
+  83               		.stabs	"/usr/lib/gcc/avr/4.6.1/include/stdarg.h",130,0,0,0
+  84               		.stabs	"__gnuc_va_list:t(11,1)=(11,2)=*(0,15)",128,0,40,0
+  85               		.stabs	"va_list:t(11,3)=(11,1)",128,0,102,0
+  86               		.stabn	162,0,0,0
+  87               		.stabs	"__file:T(10,1)=s14buf:(10,2)=*(0,2),0,16;unget:(0,11),16,8;flags:(6,2),24,8;size:(0,1),32,
+  88               		.stabn	162,0,0,0
+  89               		.stabn	162,0,0,0
+  90               		.stabs	"init_UART:F(0,15)",36,0,1,init_UART
+  91               	.global	init_UART
+  92               		.type	init_UART, @function
+  93               	init_UART:
+  94               		.stabd	46,0,0
+  95               		.stabs	"uart.h",132,0,0,.Ltext1
+  96               	.Ltext1:
+   1:uart.h        **** void init_UART(void)
+   2:uart.h        **** {
+  97               		.stabn	68,0,2,.LM0-.LFBB1
+  98               	.LM0:
+  99               	.LFBB1:
+ 100               	/* prologue: function */
+ 101               	/* frame size = 0 */
+ 102               	/* stack size = 0 */
+ 103               	.L__stack_usage = 0
+   3:uart.h        ****     UCSRA = 0;
+ 104               		.stabn	68,0,3,.LM1-.LFBB1
+ 105               	.LM1:
+ 106 0000 1BB8      		out 43-0x20,__zero_reg__
+   4:uart.h        ****     UCSRB = 0;
+ 107               		.stabn	68,0,4,.LM2-.LFBB1
+ 108               	.LM2:
+ 109 0002 1AB8      		out 42-0x20,__zero_reg__
+   5:uart.h        ****     UCSRC = 0;
+GAS LISTING /tmp/ccEiLSTx.s 			page 3
+
+
+ 110               		.stabn	68,0,5,.LM3-.LFBB1
+ 111               	.LM3:
+ 112 0004 10BC      		out 64-0x20,__zero_reg__
+   6:uart.h        ****     
+   7:uart.h        ****     UCSRA |= (1<<U2X);
+ 113               		.stabn	68,0,7,.LM4-.LFBB1
+ 114               	.LM4:
+ 115 0006 599A      		sbi 43-0x20,1
+   8:uart.h        ****     UCSRB |=(1<<RXEN)|(1<<TXEN);
+ 116               		.stabn	68,0,8,.LM5-.LFBB1
+ 117               	.LM5:
+ 118 0008 8AB1      		in r24,42-0x20
+ 119 000a 8861      		ori r24,lo8(24)
+ 120 000c 8AB9      		out 42-0x20,r24
+   9:uart.h        ****     UCSRC |=(1<<URSEL)|(1<<UCSZ0)|(1<<UCSZ1);
+ 121               		.stabn	68,0,9,.LM6-.LFBB1
+ 122               	.LM6:
+ 123 000e 80B5      		in r24,64-0x20
+ 124 0010 8668      		ori r24,lo8(-122)
+ 125 0012 80BD      		out 64-0x20,r24
+  10:uart.h        **** 
+  11:uart.h        ****     UBRRL = 51;
+ 126               		.stabn	68,0,11,.LM7-.LFBB1
+ 127               	.LM7:
+ 128 0014 83E3      		ldi r24,lo8(51)
+ 129 0016 89B9      		out 41-0x20,r24
+  12:uart.h        ****     UBRRH = 0;
+ 130               		.stabn	68,0,12,.LM8-.LFBB1
+ 131               	.LM8:
+ 132 0018 10BC      		out 64-0x20,__zero_reg__
+ 133               	/* epilogue start */
+  13:uart.h        **** }
+ 134               		.stabn	68,0,13,.LM9-.LFBB1
+ 135               	.LM9:
+ 136 001a 0895      		ret
+ 137               		.size	init_UART, .-init_UART
+ 138               	.Lscope1:
+ 139               		.stabs	"",36,0,0,.Lscope1-.LFBB1
+ 140               		.stabd	78,0,0
+ 141               		.stabs	"send_UART:F(0,15)",36,0,14,send_UART
+ 142               		.stabs	"size:P(6,4)",64,0,14,22
+ 143               	.global	send_UART
+ 144               		.type	send_UART, @function
+ 145               	send_UART:
+ 146               		.stabd	46,0,0
+  14:uart.h        **** void send_UART(uint8_t *data, uint16_t size)
+  15:uart.h        **** {
+ 147               		.stabn	68,0,15,.LM10-.LFBB2
+ 148               	.LM10:
+ 149               	.LFBB2:
+ 150               	/* prologue: function */
+ 151               	/* frame size = 0 */
+ 152               	/* stack size = 0 */
+ 153               	.L__stack_usage = 0
+  16:uart.h        ****     uint16_t i = 0;
+ 154               		.stabn	68,0,16,.LM11-.LFBB2
+ 155               	.LM11:
+GAS LISTING /tmp/ccEiLSTx.s 			page 4
+
+
+ 156 001c FC01      		movw r30,r24
+ 157 001e 80E0      		ldi r24,lo8(0)
+ 158 0020 90E0      		ldi r25,hi8(0)
+  17:uart.h        ****     while(i < size)
+ 159               		.stabn	68,0,17,.LM12-.LFBB2
+ 160               	.LM12:
+ 161 0022 00C0      		rjmp .L3
+ 162               	.L5:
+  18:uart.h        ****     {
+  19:uart.h        ****         while ( !(UCSRA & (_BV(UDRE))) );
+ 163               		.stabn	68,0,19,.LM13-.LFBB2
+ 164               	.LM13:
+ 165 0024 5D9B      		sbis 43-0x20,5
+ 166 0026 00C0      		rjmp .L5
+  20:uart.h        ****         UDR = data[i];
+ 167               		.stabn	68,0,20,.LM14-.LFBB2
+ 168               	.LM14:
+ 169 0028 2191      		ld r18,Z+
+ 170 002a 2CB9      		out 44-0x20,r18
+  21:uart.h        ****         i++;
+ 171               		.stabn	68,0,21,.LM15-.LFBB2
+ 172               	.LM15:
+ 173 002c 0196      		adiw r24,1
+ 174               	.L3:
+  17:uart.h        ****     while(i < size)
+ 175               		.stabn	68,0,17,.LM16-.LFBB2
+ 176               	.LM16:
+ 177 002e 8617      		cp r24,r22
+ 178 0030 9707      		cpc r25,r23
+ 179 0032 01F4      		brne .L5
+ 180               	/* epilogue start */
+  22:uart.h        ****     }
+  23:uart.h        **** }
+ 181               		.stabn	68,0,23,.LM17-.LFBB2
+ 182               	.LM17:
+ 183 0034 0895      		ret
+ 184               		.size	send_UART, .-send_UART
+ 185               		.stabs	"i:r(6,4)",64,0,16,24
+ 186               		.stabn	192,0,0,.LFBB2-.LFBB2
+ 187               		.stabn	224,0,0,.Lscope2-.LFBB2
+ 188               	.Lscope2:
+ 189               		.stabs	"",36,0,0,.Lscope2-.LFBB2
+ 190               		.stabd	78,0,0
+ 191               		.data
+ 192               	.LC0:
+ 193 0000 4869 0D0A 		.string	"Hi\r\n"
+ 193      00
+ 194               	.LC1:
+ 195 0005 2564 2044 		.string	"%d Done1\r\n"
+ 195      6F6E 6531 
+ 195      0D0A 00
+ 196               	.LC2:
+ 197 0010 5265 6365 		.string	"Received Packet\r"
+ 197      6976 6564 
+ 197      2050 6163 
+ 197      6B65 740D 
+ 197      00
+GAS LISTING /tmp/ccEiLSTx.s 			page 5
+
+
+ 198               		.section	.text.startup,"ax",@progbits
+ 199               		.stabs	"main:F(0,1)",36,0,6,main
+ 200               	.global	main
+ 201               		.type	main, @function
+ 202               	main:
+ 203               		.stabd	46,0,0
+ 204               		.stabs	"main.c",132,0,0,.Ltext2
+ 205               	.Ltext2:
+   1:main.c        **** #include "common.h"
+   2:main.c        **** #include "spi.h"
+   3:main.c        **** #include "receive.h"
+   4:main.c        **** #include "functions.h"
+   5:main.c        **** #include "uart.h"
+   6:main.c        **** int main(void)
+   7:main.c        **** {
+ 206               		.stabn	68,0,7,.LM18-.LFBB3
+ 207               	.LM18:
+ 208               	.LFBB3:
+ 209 0000 CF93      		push r28
+ 210 0002 DF93      		push r29
+ 211 0004 CDB7      		in r28,__SP_L__
+ 212 0006 DEB7      		in r29,__SP_H__
+ 213 0008 C456      		subi r28,lo8(-(-100))
+ 214 000a D040      		sbci r29,hi8(-(-100))
+ 215 000c 0FB6      		in __tmp_reg__,__SREG__
+ 216 000e F894      		cli
+ 217 0010 DEBF      		out __SP_H__,r29
+ 218 0012 0FBE      		out __SREG__,__tmp_reg__
+ 219 0014 CDBF      		out __SP_L__,r28
+ 220               	/* prologue: function */
+ 221               	/* frame size = 100 */
+ 222               	/* stack size = 102 */
+ 223               	.L__stack_usage = 102
+   8:main.c        ****   uint8_t frame[100], x;
+   9:main.c        ****   
+  10:main.c        ****   init_UART();
+ 224               		.stabn	68,0,10,.LM19-.LFBB3
+ 225               	.LM19:
+ 226 0016 00D0      		rcall init_UART
+  11:main.c        ****   send_UART((uint8_t *)"Hi\r\n", 3);
+ 227               		.stabn	68,0,11,.LM20-.LFBB3
+ 228               	.LM20:
+ 229 0018 80E0      		ldi r24,lo8(.LC0)
+ 230 001a 90E0      		ldi r25,hi8(.LC0)
+ 231 001c 63E0      		ldi r22,lo8(3)
+ 232 001e 70E0      		ldi r23,hi8(3)
+ 233 0020 00D0      		rcall send_UART
+  12:main.c        ****   
+  13:main.c        ****   init_SPI();
+ 234               		.stabn	68,0,13,.LM21-.LFBB3
+ 235               	.LM21:
+ 236 0022 00D0      		rcall init_SPI
+  14:main.c        ****   cc1020_init_dio();
+ 237               		.stabn	68,0,14,.LM22-.LFBB3
+ 238               	.LM22:
+ 239 0024 00D0      		rcall cc1020_init_dio
+  15:main.c        ****   
+GAS LISTING /tmp/ccEiLSTx.s 			page 6
+
+
+  16:main.c        ****   x = init_CC1020();
+ 240               		.stabn	68,0,16,.LM23-.LFBB3
+ 241               	.LM23:
+ 242 0026 00D0      		rcall init_CC1020
+  17:main.c        ****   sprintf((char *)frame, "%d Done1\r\n", x);
+ 243               		.stabn	68,0,17,.LM24-.LFBB3
+ 244               	.LM24:
+ 245 0028 00D0      		rcall .
+ 246 002a 00D0      		rcall .
+ 247 002c 00D0      		rcall .
+ 248 002e EDB7      		in r30,__SP_L__
+ 249 0030 FEB7      		in r31,__SP_H__
+ 250 0032 3196      		adiw r30,1
+ 251 0034 8E01      		movw r16,r28
+ 252 0036 0F5F      		subi r16,lo8(-(1))
+ 253 0038 1F4F      		sbci r17,hi8(-(1))
+ 254 003a ADB7      		in r26,__SP_L__
+ 255 003c BEB7      		in r27,__SP_H__
+ 256 003e 1296      		adiw r26,1+1
+ 257 0040 1C93      		st X,r17
+ 258 0042 0E93      		st -X,r16
+ 259 0044 1197      		sbiw r26,1
+ 260 0046 20E0      		ldi r18,lo8(.LC1)
+ 261 0048 30E0      		ldi r19,hi8(.LC1)
+ 262 004a 3383      		std Z+3,r19
+ 263 004c 2283      		std Z+2,r18
+ 264 004e 8483      		std Z+4,r24
+ 265 0050 1582      		std Z+5,__zero_reg__
+ 266 0052 00D0      		rcall sprintf
+  18:main.c        ****   send_UART(frame, strlen((char *)frame));
+ 267               		.stabn	68,0,18,.LM25-.LFBB3
+ 268               	.LM25:
+ 269 0054 F801      		movw r30,r16
+ 270 0056 0190      		ld __tmp_reg__,Z+
+ 271 0058 0020      		tst __tmp_reg__
+ 272 005a 01F4      		brne .-6
+ 273 005c BF01      		movw r22,r30
+ 274 005e 6150      		subi r22,lo8(-(-1))
+ 275 0060 7040      		sbci r23,hi8(-(-1))
+ 276 0062 601B      		sub r22,r16
+ 277 0064 710B      		sbc r23,r17
+ 278 0066 8DB7      		in r24,__SP_L__
+ 279 0068 9EB7      		in r25,__SP_H__
+ 280 006a 0696      		adiw r24,6
+ 281 006c 0FB6      		in __tmp_reg__,__SREG__
+ 282 006e F894      		cli
+ 283 0070 9EBF      		out __SP_H__,r25
+ 284 0072 0FBE      		out __SREG__,__tmp_reg__
+ 285 0074 8DBF      		out __SP_L__,r24
+ 286 0076 C801      		movw r24,r16
+ 287 0078 00D0      		rcall send_UART
+  19:main.c        ****   
+  20:main.c        ****   
+  21:main.c        ****   while(1) 
+  22:main.c        ****   {
+  23:main.c        ****     x = cc1020_receive_packet(frame);
+ 288               		.stabn	68,0,23,.LM26-.LFBB3
+GAS LISTING /tmp/ccEiLSTx.s 			page 7
+
+
+ 289               	.LM26:
+ 290 007a F02E      		mov r15,r16
+ 291 007c 012F      		mov r16,r17
+ 292               	.L12:
+ 293 007e 8F2D      		mov r24,r15
+ 294 0080 902F      		mov r25,r16
+ 295 0082 00D0      		rcall cc1020_receive_packet
+ 296 0084 182F      		mov r17,r24
+  24:main.c        ****     if(x)
+ 297               		.stabn	68,0,24,.LM27-.LFBB3
+ 298               	.LM27:
+ 299 0086 8823      		tst r24
+ 300 0088 01F0      		breq .L12
+  25:main.c        ****     {
+  26:main.c        ****       send_UART("Received Packet\r", 16);
+ 301               		.stabn	68,0,26,.LM28-.LFBB3
+ 302               	.LM28:
+ 303 008a 80E0      		ldi r24,lo8(.LC2)
+ 304 008c 90E0      		ldi r25,hi8(.LC2)
+ 305 008e 60E1      		ldi r22,lo8(16)
+ 306 0090 70E0      		ldi r23,hi8(16)
+ 307 0092 00D0      		rcall send_UART
+  27:main.c        ****       send_UART(frame, x - 1);
+ 308               		.stabn	68,0,27,.LM29-.LFBB3
+ 309               	.LM29:
+ 310 0094 612F      		mov r22,r17
+ 311 0096 70E0      		ldi r23,lo8(0)
+ 312 0098 6150      		subi r22,lo8(-(-1))
+ 313 009a 7040      		sbci r23,hi8(-(-1))
+ 314 009c 8F2D      		mov r24,r15
+ 315 009e 902F      		mov r25,r16
+ 316 00a0 00D0      		rcall send_UART
+ 317 00a2 00C0      		rjmp .L12
+ 318               		.size	main, .-main
+ 319               		.stabs	"frame:(0,16)=ar(0,17)=r(0,17);0;0177777;;0;99;(6,2)",128,0,8,1
+ 320               		.stabn	192,0,0,.LFBB3-.LFBB3
+ 321               		.stabn	224,0,0,.Lscope3-.LFBB3
+ 322               	.Lscope3:
+ 323               		.stabs	"",36,0,0,.Lscope3-.LFBB3
+ 324               		.stabd	78,0,0
+ 325               		.text
+ 326               		.stabs	"",100,0,0,.Letext0
+ 327               	.Letext0:
+GAS LISTING /tmp/ccEiLSTx.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/ccEiLSTx.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccEiLSTx.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccEiLSTx.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccEiLSTx.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccEiLSTx.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccEiLSTx.s:93     .text:0000000000000000 init_UART
+     /tmp/ccEiLSTx.s:145    .text:000000000000001c send_UART
+     /tmp/ccEiLSTx.s:202    .text.startup:0000000000000000 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+init_SPI
+cc1020_init_dio
+init_CC1020
+sprintf
+cc1020_receive_packet

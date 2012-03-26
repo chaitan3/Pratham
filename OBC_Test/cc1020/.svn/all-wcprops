@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/cc1020
+END
+transmit.c
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/cc1020/transmit.c
+END
+transmit.h
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/cc1020/transmit.h
+END
+functions.c
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/cc1020/functions.c
+END
+cc1020.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/cc1020/cc1020.h
+END
+functions.h
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/cc1020/functions.h
+END

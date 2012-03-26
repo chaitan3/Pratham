@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/pratham/!svn/ver/12/OBC/trunk/Firmware/slave
+END
+ax25.c
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/slave/ax25.c
+END
+ax25.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/slave/ax25.h
+END
+eeprom.c
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/pratham/!svn/ver/12/OBC/trunk/Firmware/slave/eeprom.c
+END
+slave.c
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/pratham/!svn/ver/14/OBC/trunk/Firmware/slave/slave.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/pratham/!svn/ver/15/OBC/trunk/Firmware/slave/Makefile
+END
+eeprom.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/pratham/!svn/ver/12/OBC/trunk/Firmware/slave/eeprom.h
+END

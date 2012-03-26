@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/interfaces
+END
+spi.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/pratham/!svn/ver/9/OBC/trunk/Firmware/interfaces/spi.h
+END
+twi.c
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/interfaces/twi.c
+END
+twi.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/interfaces/twi.h
+END
+spi.c
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/interfaces/spi.c
+END

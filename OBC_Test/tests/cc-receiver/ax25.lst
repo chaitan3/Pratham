@@ -1,0 +1,291 @@
+GAS LISTING /tmp/ccBz68yO.s 			page 1
+
+
+   1               		.file	"ax25.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.global __do_copy_data
+   8               		.global __do_clear_bss
+   9               		.stabs	"/data/programs/satellite/OBC_Test/tests/cc-receiver/",100,0,2,.Ltext0
+  10               		.stabs	"ax25.c",100,0,2,.Ltext0
+  11               		.text
+  12               	.Ltext0:
+  13               		.stabs	"gcc2_compiled.",60,0,0,0
+  14               		.stabs	"int:t(0,1)=r(0,1);-32768;32767;",128,0,0,0
+  15               		.stabs	"char:t(0,2)=@s8;r(0,2);0;255;",128,0,0,0
+  16               		.stabs	"long int:t(0,3)=@s32;r(0,3);020000000000;017777777777;",128,0,0,0
+  17               		.stabs	"unsigned int:t(0,4)=r(0,4);0;0177777;",128,0,0,0
+  18               		.stabs	"long unsigned int:t(0,5)=@s32;r(0,5);0;037777777777;",128,0,0,0
+  19               		.stabs	"long long int:t(0,6)=@s64;r(0,6);01000000000000000000000;0777777777777777777777;",128,0,0,
+  20               		.stabs	"long long unsigned int:t(0,7)=@s64;r(0,7);0;01777777777777777777777;",128,0,0,0
+  21               		.stabs	"short int:t(0,8)=r(0,8);-32768;32767;",128,0,0,0
+  22               		.stabs	"short unsigned int:t(0,9)=r(0,9);0;0177777;",128,0,0,0
+  23               		.stabs	"signed char:t(0,10)=@s8;r(0,10);-128;127;",128,0,0,0
+  24               		.stabs	"unsigned char:t(0,11)=@s8;r(0,11);0;255;",128,0,0,0
+  25               		.stabs	"float:t(0,12)=r(0,1);4;0;",128,0,0,0
+  26               		.stabs	"double:t(0,13)=r(0,1);4;0;",128,0,0,0
+  27               		.stabs	"long double:t(0,14)=r(0,1);4;0;",128,0,0,0
+  28               		.stabs	"void:t(0,15)=(0,15)",128,0,0,0
+  29               		.stabs	"common.h",130,0,0,0
+  30               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/avr/io.h",130,0,0,0
+  31               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/avr/sfr_defs.h",130,0,0,0
+  32               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/inttypes.h",130,0,0,0
+  33               		.stabs	"/usr/lib/gcc/avr/4.6.1/include/stdint.h",130,0,0,0
+  34               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/stdint.h",130,0,0,0
+  35               		.stabs	"int8_t:t(6,1)=(0,10)",128,0,121,0
+  36               		.stabs	"uint8_t:t(6,2)=(0,11)",128,0,122,0
+  37               		.stabs	"int16_t:t(6,3)=(0,1)",128,0,123,0
+  38               		.stabs	"uint16_t:t(6,4)=(0,4)",128,0,124,0
+  39               		.stabs	"int32_t:t(6,5)=(0,3)",128,0,125,0
+  40               		.stabs	"uint32_t:t(6,6)=(0,5)",128,0,126,0
+  41               		.stabs	"int64_t:t(6,7)=(0,6)",128,0,128,0
+  42               		.stabs	"uint64_t:t(6,8)=(0,7)",128,0,129,0
+  43               		.stabs	"intptr_t:t(6,9)=(6,3)",128,0,142,0
+  44               		.stabs	"uintptr_t:t(6,10)=(6,4)",128,0,147,0
+  45               		.stabs	"int_least8_t:t(6,11)=(6,1)",128,0,159,0
+  46               		.stabs	"uint_least8_t:t(6,12)=(6,2)",128,0,164,0
+  47               		.stabs	"int_least16_t:t(6,13)=(6,3)",128,0,169,0
+  48               		.stabs	"uint_least16_t:t(6,14)=(6,4)",128,0,174,0
+  49               		.stabs	"int_least32_t:t(6,15)=(6,5)",128,0,179,0
+  50               		.stabs	"uint_least32_t:t(6,16)=(6,6)",128,0,184,0
+  51               		.stabs	"int_least64_t:t(6,17)=(6,7)",128,0,192,0
+  52               		.stabs	"uint_least64_t:t(6,18)=(6,8)",128,0,199,0
+  53               		.stabs	"int_fast8_t:t(6,19)=(6,1)",128,0,213,0
+  54               		.stabs	"uint_fast8_t:t(6,20)=(6,2)",128,0,218,0
+  55               		.stabs	"int_fast16_t:t(6,21)=(6,3)",128,0,223,0
+  56               		.stabs	"uint_fast16_t:t(6,22)=(6,4)",128,0,228,0
+  57               		.stabs	"int_fast32_t:t(6,23)=(6,5)",128,0,233,0
+GAS LISTING /tmp/ccBz68yO.s 			page 2
+
+
+  58               		.stabs	"uint_fast32_t:t(6,24)=(6,6)",128,0,238,0
+  59               		.stabs	"int_fast64_t:t(6,25)=(6,7)",128,0,246,0
+  60               		.stabs	"uint_fast64_t:t(6,26)=(6,8)",128,0,253,0
+  61               		.stabs	"intmax_t:t(6,27)=(6,7)",128,0,273,0
+  62               		.stabs	"uintmax_t:t(6,28)=(6,8)",128,0,278,0
+  63               		.stabn	162,0,0,0
+  64               		.stabn	162,0,0,0
+  65               		.stabs	"int_farptr_t:t(4,1)=(6,5)",128,0,77,0
+  66               		.stabs	"uint_farptr_t:t(4,2)=(6,6)",128,0,81,0
+  67               		.stabn	162,0,0,0
+  68               		.stabn	162,0,0,0
+  69               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/avr/fuse.h",130,0,0,0
+  70               		.stabs	"__fuse_t:t(7,1)=(7,2)=s2low:(0,11),0,8;high:(0,11),8,8;;",128,0,252,0
+  71               		.stabn	162,0,0,0
+  72               		.stabn	162,0,0,0
+  73               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/stdlib.h",130,0,0,0
+  74               		.stabs	"/usr/lib/gcc/avr/4.6.1/include/stddef.h",130,0,0,0
+  75               		.stabs	"size_t:t(9,1)=(0,4)",128,0,212,0
+  76               		.stabs	"wchar_t:t(9,2)=(0,1)",128,0,324,0
+  77               		.stabn	162,0,0,0
+  78               		.stabs	"div_t:t(8,1)=(8,2)=s4quot:(0,1),0,16;rem:(0,1),16,16;;",128,0,71,0
+  79               		.stabs	"ldiv_t:t(8,3)=(8,4)=s8quot:(0,3),0,32;rem:(0,3),32,32;;",128,0,77,0
+  80               		.stabs	"__compar_fn_t:t(8,5)=(8,6)=*(8,7)=f(0,1)",128,0,80,0
+  81               		.stabn	162,0,0,0
+  82               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/stdio.h",130,0,0,0
+  83               		.stabs	"/usr/lib/gcc/avr/4.6.1/include/stdarg.h",130,0,0,0
+  84               		.stabs	"__gnuc_va_list:t(11,1)=(11,2)=*(0,15)",128,0,40,0
+  85               		.stabs	"va_list:t(11,3)=(11,1)",128,0,102,0
+  86               		.stabn	162,0,0,0
+  87               		.stabs	"__file:T(10,1)=s14buf:(10,2)=*(0,2),0,16;unget:(0,11),16,8;flags:(6,2),24,8;size:(0,1),32,
+  88               		.stabn	162,0,0,0
+  89               		.stabn	162,0,0,0
+  90               		.stabs	"update_crc_16:F(6,4)",36,0,4,update_crc_16
+  91               		.stabs	"byte:P(6,2)",64,0,4,24
+  92               		.stabs	"crc:P(6,4)",64,0,4,22
+  93               	.global	update_crc_16
+  94               		.type	update_crc_16, @function
+  95               	update_crc_16:
+  96               		.stabd	46,0,0
+   1:ax25.c        **** #include "common.h"
+   2:ax25.c        **** #include "ax25.h"
+   3:ax25.c        **** 
+   4:ax25.c        **** uint16_t update_crc_16(uint8_t byte, uint16_t crc)
+   5:ax25.c        **** {
+  97               		.stabn	68,0,5,.LM0-.LFBB1
+  98               	.LM0:
+  99               	.LFBB1:
+ 100               	/* prologue: function */
+ 101               	/* frame size = 0 */
+ 102               	/* stack size = 0 */
+ 103               	.L__stack_usage = 0
+ 104               		.stabn	68,0,5,.LM1-.LFBB1
+ 105               	.LM1:
+ 106 0000 98E0      		ldi r25,lo8(8)
+   6:ax25.c        ****   uint8_t bit, crcbit, j;
+   7:ax25.c        ****   
+   8:ax25.c        ****   for (j = 0; j < 8; j++)
+GAS LISTING /tmp/ccBz68yO.s 			page 3
+
+
+   9:ax25.c        ****   {
+  10:ax25.c        ****     bit = byte & 0x01;      
+  11:ax25.c        ****     crcbit = crc & 0x01;
+  12:ax25.c        ****     crc = crc >> 1;      
+  13:ax25.c        ****     if (bit != crcbit)
+  14:ax25.c        ****       crc ^= CRC_CCIT_REV;
+ 107               		.stabn	68,0,14,.LM2-.LFBB1
+ 108               	.LM2:
+ 109 0002 28E0      		ldi r18,lo8(-31736)
+ 110 0004 34E8      		ldi r19,hi8(-31736)
+ 111               	.L3:
+  11:ax25.c        ****     crcbit = crc & 0x01;
+ 112               		.stabn	68,0,11,.LM3-.LFBB1
+ 113               	.LM3:
+ 114 0006 462F      		mov r20,r22
+ 115 0008 4170      		andi r20,lo8(1)
+  12:ax25.c        ****     crc = crc >> 1;      
+ 116               		.stabn	68,0,12,.LM4-.LFBB1
+ 117               	.LM4:
+ 118 000a 7695      		lsr r23
+ 119 000c 6795      		ror r22
+  10:ax25.c        ****     bit = byte & 0x01;      
+ 120               		.stabn	68,0,10,.LM5-.LFBB1
+ 121               	.LM5:
+ 122 000e 582F      		mov r21,r24
+ 123 0010 5170      		andi r21,lo8(1)
+  13:ax25.c        ****     if (bit != crcbit)
+ 124               		.stabn	68,0,13,.LM6-.LFBB1
+ 125               	.LM6:
+ 126 0012 5417      		cp r21,r20
+ 127 0014 01F0      		breq .L2
+ 128               		.stabn	68,0,14,.LM7-.LFBB1
+ 129               	.LM7:
+ 130 0016 6227      		eor r22,r18
+ 131 0018 7327      		eor r23,r19
+ 132               	.L2:
+  15:ax25.c        ****     byte = byte >> 1;
+ 133               		.stabn	68,0,15,.LM8-.LFBB1
+ 134               	.LM8:
+ 135 001a 8695      		lsr r24
+ 136 001c 9150      		subi r25,lo8(-(-1))
+   8:ax25.c        ****   for (j = 0; j < 8; j++)
+ 137               		.stabn	68,0,8,.LM9-.LFBB1
+ 138               	.LM9:
+ 139 001e 01F4      		brne .L3
+  16:ax25.c        ****   }
+  17:ax25.c        ****   return crc;
+  18:ax25.c        **** }
+ 140               		.stabn	68,0,18,.LM10-.LFBB1
+ 141               	.LM10:
+ 142 0020 CB01      		movw r24,r22
+ 143               	/* epilogue start */
+ 144 0022 0895      		ret
+ 145               		.size	update_crc_16, .-update_crc_16
+ 146               		.stabs	"crcbit:r(6,2)",64,0,6,20
+ 147               		.stabn	192,0,0,.LFBB1-.LFBB1
+ 148               		.stabn	224,0,0,.Lscope1-.LFBB1
+GAS LISTING /tmp/ccBz68yO.s 			page 4
+
+
+ 149               	.Lscope1:
+ 150               		.stabs	"",36,0,0,.Lscope1-.LFBB1
+ 151               		.stabd	78,0,0
+ 152               		.stabs	"calculate_crc_16:F(6,4)",36,0,20,calculate_crc_16
+ 153               		.stabs	"size:P(6,2)",64,0,20,16
+ 154               	.global	calculate_crc_16
+ 155               		.type	calculate_crc_16, @function
+ 156               	calculate_crc_16:
+ 157               		.stabd	46,0,0
+  19:ax25.c        **** 
+  20:ax25.c        **** uint16_t calculate_crc_16(uint8_t *data, uint8_t size)
+  21:ax25.c        **** {
+ 158               		.stabn	68,0,21,.LM11-.LFBB2
+ 159               	.LM11:
+ 160               	.LFBB2:
+ 161 0024 EF92      		push r14
+ 162 0026 FF92      		push r15
+ 163 0028 0F93      		push r16
+ 164 002a 1F93      		push r17
+ 165 002c CF93      		push r28
+ 166 002e DF93      		push r29
+ 167               	/* prologue: function */
+ 168               	/* frame size = 0 */
+ 169               	/* stack size = 6 */
+ 170               	.L__stack_usage = 6
+ 171 0030 182F      		mov r17,r24
+ 172 0032 062F      		mov r16,r22
+  22:ax25.c        ****   uint16_t crc = 0xFFFF;
+  23:ax25.c        ****   uint8_t i;
+  24:ax25.c        ****   
+  25:ax25.c        ****   for(i = 0; i < size; i++)
+ 173               		.stabn	68,0,25,.LM12-.LFBB2
+ 174               	.LM12:
+ 175 0034 E82E      		mov r14,r24
+ 176 0036 E701      		movw r28,r14
+ 177 0038 7E01      		movw r14,r28
+ 178 003a F92E      		mov r15,r25
+ 179 003c E701      		movw r28,r14
+  22:ax25.c        ****   uint16_t crc = 0xFFFF;
+ 180               		.stabn	68,0,22,.LM13-.LFBB2
+ 181               	.LM13:
+ 182 003e 2FEF      		ldi r18,lo8(-1)
+ 183 0040 3FEF      		ldi r19,hi8(-1)
+ 184               		.stabn	68,0,25,.LM14-.LFBB2
+ 185               	.LM14:
+ 186 0042 00C0      		rjmp .L6
+ 187               	.L7:
+  26:ax25.c        ****     crc = update_crc_16(data[i], crc);
+ 188               		.stabn	68,0,26,.LM15-.LFBB2
+ 189               	.LM15:
+ 190 0044 8991      		ld r24,Y+
+ 191 0046 B901      		movw r22,r18
+ 192 0048 00D0      		rcall update_crc_16
+ 193 004a 9C01      		movw r18,r24
+ 194               	.L6:
+  25:ax25.c        ****   for(i = 0; i < size; i++)
+ 195               		.stabn	68,0,25,.LM16-.LFBB2
+GAS LISTING /tmp/ccBz68yO.s 			page 5
+
+
+ 196               	.LM16:
+ 197 004c AE01      		movw r20,r28
+ 198 004e 411B      		sub r20,r17
+ 199 0050 4017      		cp r20,r16
+ 200 0052 00F0      		brlo .L7
+  27:ax25.c        ****     
+  28:ax25.c        ****   return ~crc;
+ 201               		.stabn	68,0,28,.LM17-.LFBB2
+ 202               	.LM17:
+ 203 0054 C901      		movw r24,r18
+ 204 0056 8095      		com r24
+ 205 0058 9095      		com r25
+ 206               	/* epilogue start */
+  29:ax25.c        **** }
+ 207               		.stabn	68,0,29,.LM18-.LFBB2
+ 208               	.LM18:
+ 209 005a DF91      		pop r29
+ 210 005c CF91      		pop r28
+ 211 005e 1F91      		pop r17
+ 212 0060 0F91      		pop r16
+ 213 0062 FF90      		pop r15
+ 214 0064 EF90      		pop r14
+ 215 0066 0895      		ret
+ 216               		.size	calculate_crc_16, .-calculate_crc_16
+ 217               		.stabs	"crc:r(6,4)",64,0,22,18
+ 218               		.stabn	192,0,0,.LFBB2-.LFBB2
+ 219               		.stabn	224,0,0,.Lscope2-.LFBB2
+ 220               	.Lscope2:
+ 221               		.stabs	"",36,0,0,.Lscope2-.LFBB2
+ 222               		.stabd	78,0,0
+ 223               		.stabs	"",100,0,0,.Letext0
+ 224               	.Letext0:
+GAS LISTING /tmp/ccBz68yO.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 ax25.c
+     /tmp/ccBz68yO.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccBz68yO.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccBz68yO.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccBz68yO.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccBz68yO.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccBz68yO.s:95     .text:0000000000000000 update_crc_16
+     /tmp/ccBz68yO.s:156    .text:0000000000000024 calculate_crc_16
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

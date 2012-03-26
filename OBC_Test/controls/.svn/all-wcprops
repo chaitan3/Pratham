@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/pratham/!svn/ver/12/OBC/trunk/Firmware/controls
+END
+propagator.c
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/pratham/!svn/ver/12/OBC/trunk/Firmware/controls/propagator.c
+END
+frame.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/controls/frame.h
+END
+quest.c
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/pratham/!svn/ver/15/OBC/trunk/Firmware/controls/quest.c
+END
+controller.c
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/pratham/!svn/ver/15/OBC/trunk/Firmware/controls/controller.c
+END
+propagator.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/pratham/!svn/ver/8/OBC/trunk/Firmware/controls/propagator.h
+END
+quest.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/pratham/!svn/ver/9/OBC/trunk/Firmware/controls/quest.h
+END
+igrf.c
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/pratham/!svn/ver/19/OBC/trunk/Firmware/controls/igrf.c
+END
+mathutil.c
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/pratham/!svn/ver/8/OBC/trunk/Firmware/controls/mathutil.c
+END
+controller.h
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/pratham/!svn/ver/12/OBC/trunk/Firmware/controls/controller.h
+END
+frame.c
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/controls/frame.c
+END
+igrf.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/pratham/!svn/ver/8/OBC/trunk/Firmware/controls/igrf.h
+END
+mathutil.h
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/pratham/!svn/ver/8/OBC/trunk/Firmware/controls/mathutil.h
+END

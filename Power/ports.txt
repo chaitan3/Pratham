@@ -1,0 +1,20 @@
+
+ADC Variables Confirm
+010-AN2 - current thru solar panel MAX4372 IC6, i=(V/2)/R R=0.01 ohms
+000-AN0 - current thru battery discharging
+001-AN1 - VBatt/2
+011-AN3 - monitors 3.6 volt
+100-AN4: monitors 3.3 V
+
+snap - RB0/INT
+
+NEW PORTS, OC on the right
+BeaconPower: EN4 : RE0, RE1
+Control : EN6, RC1, RD0
+GPS : EN2, RC6, RC7 
+CC : EN5, RE2, RC0 
+OBC : EN3, RD2, RD3
+MAG : EN7, RD5
+
+No BatteryStatus lines?
+Confirm Uplink Procedure

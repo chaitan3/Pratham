@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/pratham/!svn/ver/12/OBC/trunk/Firmware/sensors
+END
+gps.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/pratham/!svn/ver/7/OBC/trunk/Firmware/sensors/gps.h
+END
+mag.c
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/pratham/!svn/ver/12/OBC/trunk/Firmware/sensors/mag.c
+END
+sun.c
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/pratham/!svn/ver/7/OBC/trunk/Firmware/sensors/sun.c
+END
+gps.c
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/pratham/!svn/ver/11/OBC/trunk/Firmware/sensors/gps.c
+END
+mag.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/pratham/!svn/ver/8/OBC/trunk/Firmware/sensors/mag.h
+END
+sun.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/pratham/!svn/ver/7/OBC/trunk/Firmware/sensors/sun.h
+END

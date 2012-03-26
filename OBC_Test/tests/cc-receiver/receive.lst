@@ -1,0 +1,509 @@
+GAS LISTING /tmp/ccqU6uMF.s 			page 1
+
+
+   1               		.file	"receive.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.global __do_copy_data
+   8               		.global __do_clear_bss
+   9               		.stabs	"/data/programs/satellite/OBC_Test/tests/cc-receiver/",100,0,2,.Ltext0
+  10               		.stabs	"receive.c",100,0,2,.Ltext0
+  11               		.text
+  12               	.Ltext0:
+  13               		.stabs	"gcc2_compiled.",60,0,0,0
+  14               		.stabs	"int:t(0,1)=r(0,1);-32768;32767;",128,0,0,0
+  15               		.stabs	"char:t(0,2)=@s8;r(0,2);0;255;",128,0,0,0
+  16               		.stabs	"long int:t(0,3)=@s32;r(0,3);020000000000;017777777777;",128,0,0,0
+  17               		.stabs	"unsigned int:t(0,4)=r(0,4);0;0177777;",128,0,0,0
+  18               		.stabs	"long unsigned int:t(0,5)=@s32;r(0,5);0;037777777777;",128,0,0,0
+  19               		.stabs	"long long int:t(0,6)=@s64;r(0,6);01000000000000000000000;0777777777777777777777;",128,0,0,
+  20               		.stabs	"long long unsigned int:t(0,7)=@s64;r(0,7);0;01777777777777777777777;",128,0,0,0
+  21               		.stabs	"short int:t(0,8)=r(0,8);-32768;32767;",128,0,0,0
+  22               		.stabs	"short unsigned int:t(0,9)=r(0,9);0;0177777;",128,0,0,0
+  23               		.stabs	"signed char:t(0,10)=@s8;r(0,10);-128;127;",128,0,0,0
+  24               		.stabs	"unsigned char:t(0,11)=@s8;r(0,11);0;255;",128,0,0,0
+  25               		.stabs	"float:t(0,12)=r(0,1);4;0;",128,0,0,0
+  26               		.stabs	"double:t(0,13)=r(0,1);4;0;",128,0,0,0
+  27               		.stabs	"long double:t(0,14)=r(0,1);4;0;",128,0,0,0
+  28               		.stabs	"void:t(0,15)=(0,15)",128,0,0,0
+  29               		.stabs	"common.h",130,0,0,0
+  30               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/avr/io.h",130,0,0,0
+  31               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/avr/sfr_defs.h",130,0,0,0
+  32               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/inttypes.h",130,0,0,0
+  33               		.stabs	"/usr/lib/gcc/avr/4.6.1/include/stdint.h",130,0,0,0
+  34               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/stdint.h",130,0,0,0
+  35               		.stabs	"int8_t:t(6,1)=(0,10)",128,0,121,0
+  36               		.stabs	"uint8_t:t(6,2)=(0,11)",128,0,122,0
+  37               		.stabs	"int16_t:t(6,3)=(0,1)",128,0,123,0
+  38               		.stabs	"uint16_t:t(6,4)=(0,4)",128,0,124,0
+  39               		.stabs	"int32_t:t(6,5)=(0,3)",128,0,125,0
+  40               		.stabs	"uint32_t:t(6,6)=(0,5)",128,0,126,0
+  41               		.stabs	"int64_t:t(6,7)=(0,6)",128,0,128,0
+  42               		.stabs	"uint64_t:t(6,8)=(0,7)",128,0,129,0
+  43               		.stabs	"intptr_t:t(6,9)=(6,3)",128,0,142,0
+  44               		.stabs	"uintptr_t:t(6,10)=(6,4)",128,0,147,0
+  45               		.stabs	"int_least8_t:t(6,11)=(6,1)",128,0,159,0
+  46               		.stabs	"uint_least8_t:t(6,12)=(6,2)",128,0,164,0
+  47               		.stabs	"int_least16_t:t(6,13)=(6,3)",128,0,169,0
+  48               		.stabs	"uint_least16_t:t(6,14)=(6,4)",128,0,174,0
+  49               		.stabs	"int_least32_t:t(6,15)=(6,5)",128,0,179,0
+  50               		.stabs	"uint_least32_t:t(6,16)=(6,6)",128,0,184,0
+  51               		.stabs	"int_least64_t:t(6,17)=(6,7)",128,0,192,0
+  52               		.stabs	"uint_least64_t:t(6,18)=(6,8)",128,0,199,0
+  53               		.stabs	"int_fast8_t:t(6,19)=(6,1)",128,0,213,0
+  54               		.stabs	"uint_fast8_t:t(6,20)=(6,2)",128,0,218,0
+  55               		.stabs	"int_fast16_t:t(6,21)=(6,3)",128,0,223,0
+  56               		.stabs	"uint_fast16_t:t(6,22)=(6,4)",128,0,228,0
+  57               		.stabs	"int_fast32_t:t(6,23)=(6,5)",128,0,233,0
+GAS LISTING /tmp/ccqU6uMF.s 			page 2
+
+
+  58               		.stabs	"uint_fast32_t:t(6,24)=(6,6)",128,0,238,0
+  59               		.stabs	"int_fast64_t:t(6,25)=(6,7)",128,0,246,0
+  60               		.stabs	"uint_fast64_t:t(6,26)=(6,8)",128,0,253,0
+  61               		.stabs	"intmax_t:t(6,27)=(6,7)",128,0,273,0
+  62               		.stabs	"uintmax_t:t(6,28)=(6,8)",128,0,278,0
+  63               		.stabn	162,0,0,0
+  64               		.stabn	162,0,0,0
+  65               		.stabs	"int_farptr_t:t(4,1)=(6,5)",128,0,77,0
+  66               		.stabs	"uint_farptr_t:t(4,2)=(6,6)",128,0,81,0
+  67               		.stabn	162,0,0,0
+  68               		.stabn	162,0,0,0
+  69               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/avr/fuse.h",130,0,0,0
+  70               		.stabs	"__fuse_t:t(7,1)=(7,2)=s2low:(0,11),0,8;high:(0,11),8,8;;",128,0,252,0
+  71               		.stabn	162,0,0,0
+  72               		.stabn	162,0,0,0
+  73               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/stdlib.h",130,0,0,0
+  74               		.stabs	"/usr/lib/gcc/avr/4.6.1/include/stddef.h",130,0,0,0
+  75               		.stabs	"size_t:t(9,1)=(0,4)",128,0,212,0
+  76               		.stabs	"wchar_t:t(9,2)=(0,1)",128,0,324,0
+  77               		.stabn	162,0,0,0
+  78               		.stabs	"div_t:t(8,1)=(8,2)=s4quot:(0,1),0,16;rem:(0,1),16,16;;",128,0,71,0
+  79               		.stabs	"ldiv_t:t(8,3)=(8,4)=s8quot:(0,3),0,32;rem:(0,3),32,32;;",128,0,77,0
+  80               		.stabs	"__compar_fn_t:t(8,5)=(8,6)=*(8,7)=f(0,1)",128,0,80,0
+  81               		.stabn	162,0,0,0
+  82               		.stabs	"/usr/lib/gcc/avr/4.6.1/../../../../avr/include/stdio.h",130,0,0,0
+  83               		.stabs	"/usr/lib/gcc/avr/4.6.1/include/stdarg.h",130,0,0,0
+  84               		.stabs	"__gnuc_va_list:t(11,1)=(11,2)=*(0,15)",128,0,40,0
+  85               		.stabs	"va_list:t(11,3)=(11,1)",128,0,102,0
+  86               		.stabn	162,0,0,0
+  87               		.stabs	"__file:T(10,1)=s14buf:(10,2)=*(0,2),0,16;unget:(0,11),16,8;flags:(6,2),24,8;size:(0,1),32,
+  88               		.stabn	162,0,0,0
+  89               		.stabn	162,0,0,0
+  90               		.stabs	"cc1020_init_dio:F(0,15)",36,0,8,cc1020_init_dio
+  91               	.global	cc1020_init_dio
+  92               		.type	cc1020_init_dio, @function
+  93               	cc1020_init_dio:
+  94               		.stabd	46,0,0
+   1:receive.c     **** #include "common.h"
+   2:receive.c     **** #include "receive.h"
+   3:receive.c     **** #include "ax25.h"
+   4:receive.c     **** 
+   5:receive.c     **** //conformation to standard : CRC and transmission sequence: least/most significant bit
+   6:receive.c     **** //bit stuffing
+   7:receive.c     **** 
+   8:receive.c     **** void cc1020_init_dio(void)
+   9:receive.c     **** {
+  95               		.stabn	68,0,9,.LM0-.LFBB1
+  96               	.LM0:
+  97               	.LFBB1:
+  98               	/* prologue: function */
+  99               	/* frame size = 0 */
+ 100               	/* stack size = 0 */
+ 101               	.L__stack_usage = 0
+  10:receive.c     ****   cbi(DDR_RX, DCLK);
+ 102               		.stabn	68,0,10,.LM1-.LFBB1
+ 103               	.LM1:
+ 104 0000 BA98      		cbi 55-0x20,2
+GAS LISTING /tmp/ccqU6uMF.s 			page 3
+
+
+  11:receive.c     ****   cbi(DDR_RX, DIO);
+ 105               		.stabn	68,0,11,.LM2-.LFBB1
+ 106               	.LM2:
+ 107 0002 B998      		cbi 55-0x20,1
+ 108               	/* epilogue start */
+  12:receive.c     **** }
+ 109               		.stabn	68,0,12,.LM3-.LFBB1
+ 110               	.LM3:
+ 111 0004 0895      		ret
+ 112               		.size	cc1020_init_dio, .-cc1020_init_dio
+ 113               	.Lscope1:
+ 114               		.stabs	"",36,0,0,.Lscope1-.LFBB1
+ 115               		.stabd	78,0,0
+ 116               		.stabs	"cc1020_receive_bit:F(6,2)",36,0,14,cc1020_receive_bit
+ 117               	.global	cc1020_receive_bit
+ 118               		.type	cc1020_receive_bit, @function
+ 119               	cc1020_receive_bit:
+ 120               		.stabd	46,0,0
+  13:receive.c     **** 
+  14:receive.c     **** uint8_t cc1020_receive_bit(void)
+  15:receive.c     **** {
+ 121               		.stabn	68,0,15,.LM4-.LFBB2
+ 122               	.LM4:
+ 123               	.LFBB2:
+ 124               	/* prologue: function */
+ 125               	/* frame size = 0 */
+ 126               	/* stack size = 0 */
+ 127               	.L__stack_usage = 0
+ 128               	.L3:
+  16:receive.c     ****   uint8_t bit;
+  17:receive.c     ****   
+  18:receive.c     ****   while(!(PIN_RX & (1 << DCLK)));
+ 129               		.stabn	68,0,18,.LM5-.LFBB2
+ 130               	.LM5:
+ 131 0006 B29B      		sbis 54-0x20,2
+ 132 0008 00C0      		rjmp .L3
+  19:receive.c     ****   bit = PIN_RX & (1 << DIO);
+ 133               		.stabn	68,0,19,.LM6-.LFBB2
+ 134               	.LM6:
+ 135 000a 86B3      		in r24,54-0x20
+ 136 000c 8270      		andi r24,lo8(2)
+ 137               	.L4:
+  20:receive.c     ****   while(PIN_RX & (1 << DCLK));
+ 138               		.stabn	68,0,20,.LM7-.LFBB2
+ 139               	.LM7:
+ 140 000e B299      		sbic 54-0x20,2
+ 141 0010 00C0      		rjmp .L4
+ 142               	/* epilogue start */
+  21:receive.c     ****   
+  22:receive.c     ****   return bit;
+  23:receive.c     **** }
+ 143               		.stabn	68,0,23,.LM8-.LFBB2
+ 144               	.LM8:
+ 145 0012 0895      		ret
+ 146               		.size	cc1020_receive_bit, .-cc1020_receive_bit
+ 147               		.stabs	"bit:r(6,2)",64,0,16,24
+ 148               		.stabn	192,0,0,.LFBB2-.LFBB2
+GAS LISTING /tmp/ccqU6uMF.s 			page 4
+
+
+ 149               		.stabn	224,0,0,.Lscope2-.LFBB2
+ 150               	.Lscope2:
+ 151               		.stabs	"",36,0,0,.Lscope2-.LFBB2
+ 152               		.stabd	78,0,0
+ 153               		.stabs	"cc1020_receive_packet:F(6,2)",36,0,25,cc1020_receive_packet
+ 154               		.stabs	"data:P(0,16)=*(6,2)",64,0,25,28
+ 155               	.global	cc1020_receive_packet
+ 156               		.type	cc1020_receive_packet, @function
+ 157               	cc1020_receive_packet:
+ 158               		.stabd	46,0,0
+  24:receive.c     **** 
+  25:receive.c     **** uint8_t cc1020_receive_packet(uint8_t *data)
+  26:receive.c     **** {
+ 159               		.stabn	68,0,26,.LM9-.LFBB3
+ 160               	.LM9:
+ 161               	.LFBB3:
+ 162 0014 DF92      		push r13
+ 163 0016 EF92      		push r14
+ 164 0018 FF92      		push r15
+ 165 001a 0F93      		push r16
+ 166 001c 1F93      		push r17
+ 167 001e CF93      		push r28
+ 168 0020 DF93      		push r29
+ 169               	/* prologue: function */
+ 170               	/* frame size = 0 */
+ 171               	/* stack size = 7 */
+ 172               	.L__stack_usage = 7
+ 173 0022 EC01      		movw r28,r24
+  27:receive.c     ****   static uint8_t byte = 0;
+  28:receive.c     ****   uint8_t i, bit, size = 0, flag = 0;
+  29:receive.c     ****   uint8_t ax_counter = 0;
+  30:receive.c     ****   
+  31:receive.c     ****   uint16_t crc_in_packet, crc;
+  32:receive.c     ****   
+  33:receive.c     ****   while(byte != AX_FLAG)
+ 174               		.stabn	68,0,33,.LM10-.LFBB3
+ 175               	.LM10:
+ 176 0024 00C0      		rjmp .L22
+ 177               	.L11:
+  34:receive.c     ****   {
+  35:receive.c     ****     bit = cc1020_receive_bit();
+ 178               		.stabn	68,0,35,.LM11-.LFBB3
+ 179               	.LM11:
+ 180 0026 00D0      		rcall cc1020_receive_bit
+  36:receive.c     ****     byte = byte << 1;
+ 181               		.stabn	68,0,36,.LM12-.LFBB3
+ 182               	.LM12:
+ 183 0028 110F      		lsl r17
+  37:receive.c     ****     if(bit == 0)
+ 184               		.stabn	68,0,37,.LM13-.LFBB3
+ 185               	.LM13:
+ 186 002a 8111      		cpse r24,__zero_reg__
+ 187               	.L9:
+  38:receive.c     ****       byte &= ~(0x01);
+  39:receive.c     ****     else
+  40:receive.c     ****       byte |= 0x01;
+ 188               		.stabn	68,0,40,.LM14-.LFBB3
+GAS LISTING /tmp/ccqU6uMF.s 			page 5
+
+
+ 189               	.LM14:
+ 190 002c 1160      		ori r17,lo8(1)
+ 191               	.L23:
+ 192 002e 1093 0000 		sts byte.1780,r17
+ 193               	.L22:
+  33:receive.c     ****   while(byte != AX_FLAG)
+ 194               		.stabn	68,0,33,.LM15-.LFBB3
+ 195               	.LM15:
+ 196 0032 1091 0000 		lds r17,byte.1780
+ 197 0036 1E37      		cpi r17,lo8(126)
+ 198 0038 01F4      		brne .L11
+  33:receive.c     ****   while(byte != AX_FLAG)
+ 199               		.stabn	68,0,33,.LM16-.LFBB3
+ 200               	.LM16:
+ 201 003a 00E0      		ldi r16,lo8(0)
+ 202 003c EE24      		clr r14
+ 203 003e 00C0      		rjmp .L16
+ 204               	.L19:
+  41:receive.c     ****   }
+  42:receive.c     ****   
+  43:receive.c     ****   do
+  44:receive.c     ****   {
+  45:receive.c     ****     for(i = 0; i < 8; i++)
+  46:receive.c     ****     {
+  47:receive.c     ****       bit = cc1020_receive_bit();
+  48:receive.c     ****       byte = byte << 1;
+  49:receive.c     ****       if(bit == 0)
+  50:receive.c     ****         byte &= ~(0x01);
+  51:receive.c     ****       else
+  52:receive.c     ****         byte |= 0x01;
+  53:receive.c     ****       
+  54:receive.c     ****       if(bit)
+  55:receive.c     ****       {
+  56:receive.c     ****         ax_counter++;
+  57:receive.c     ****         if(ax_counter == 5)
+  58:receive.c     ****         {
+  59:receive.c     ****           ax_counter = 0;
+  60:receive.c     ****           bit = cc1020_receive_bit();
+  61:receive.c     ****           if(bit)
+  62:receive.c     ****           {
+  63:receive.c     ****             byte = byte << 1;
+  64:receive.c     ****             byte |= 0x01;
+  65:receive.c     ****             
+  66:receive.c     ****             flag = 1;
+  67:receive.c     ****             
+  68:receive.c     ****             if(i == 5)
+  69:receive.c     ****               i++;
+  70:receive.c     ****             else
+  71:receive.c     ****               return 0;
+  72:receive.c     ****           }
+  73:receive.c     ****         }
+  74:receive.c     ****       }
+  75:receive.c     ****       else
+  76:receive.c     ****         ax_counter = 0;
+  77:receive.c     ****     }
+  78:receive.c     ****     data[size++] = byte;
+ 205               		.stabn	68,0,78,.LM17-.LFBB3
+GAS LISTING /tmp/ccqU6uMF.s 			page 6
+
+
+ 206               	.LM17:
+ 207 0040 EF2C      		mov r14,r15
+ 208               	.L16:
+ 209 0042 DD24      		clr r13
+  45:receive.c     ****     for(i = 0; i < 8; i++)
+ 210               		.stabn	68,0,45,.LM18-.LFBB3
+ 211               	.LM18:
+ 212 0044 10E0      		ldi r17,lo8(0)
+ 213               	.L15:
+  47:receive.c     ****       bit = cc1020_receive_bit();
+ 214               		.stabn	68,0,47,.LM19-.LFBB3
+ 215               	.LM19:
+ 216 0046 00D0      		rcall cc1020_receive_bit
+  48:receive.c     ****       byte = byte << 1;
+ 217               		.stabn	68,0,48,.LM20-.LFBB3
+ 218               	.LM20:
+ 219 0048 9091 0000 		lds r25,byte.1780
+ 220 004c 990F      		lsl r25
+  49:receive.c     ****       if(bit == 0)
+ 221               		.stabn	68,0,49,.LM21-.LFBB3
+ 222               	.LM21:
+ 223 004e 8823      		tst r24
+ 224 0050 01F4      		brne .L12
+  50:receive.c     ****         byte &= ~(0x01);
+ 225               		.stabn	68,0,50,.LM22-.LFBB3
+ 226               	.LM22:
+ 227 0052 9093 0000 		sts byte.1780,r25
+ 228 0056 00C0      		rjmp .L17
+ 229               	.L12:
+  52:receive.c     ****         byte |= 0x01;
+ 230               		.stabn	68,0,52,.LM23-.LFBB3
+ 231               	.LM23:
+ 232 0058 FF24      		clr r15
+ 233 005a F394      		inc r15
+ 234 005c F92A      		or r15,r25
+ 235 005e F092 0000 		sts byte.1780,r15
+  56:receive.c     ****         ax_counter++;
+ 236               		.stabn	68,0,56,.LM24-.LFBB3
+ 237               	.LM24:
+ 238 0062 0F5F      		subi r16,lo8(-(1))
+  57:receive.c     ****         if(ax_counter == 5)
+ 239               		.stabn	68,0,57,.LM25-.LFBB3
+ 240               	.LM25:
+ 241 0064 0530      		cpi r16,lo8(5)
+ 242 0066 01F4      		brne .L13
+  60:receive.c     ****           bit = cc1020_receive_bit();
+ 243               		.stabn	68,0,60,.LM26-.LFBB3
+ 244               	.LM26:
+ 245 0068 00D0      		rcall cc1020_receive_bit
+  61:receive.c     ****           if(bit)
+ 246               		.stabn	68,0,61,.LM27-.LFBB3
+ 247               	.LM27:
+ 248 006a 8823      		tst r24
+ 249 006c 01F0      		breq .L17
+  63:receive.c     ****             byte = byte << 1;
+ 250               		.stabn	68,0,63,.LM28-.LFBB3
+ 251               	.LM28:
+GAS LISTING /tmp/ccqU6uMF.s 			page 7
+
+
+ 252 006e 8F2D      		mov r24,r15
+ 253 0070 880F      		lsl r24
+  64:receive.c     ****             byte |= 0x01;
+ 254               		.stabn	68,0,64,.LM29-.LFBB3
+ 255               	.LM29:
+ 256 0072 8160      		ori r24,lo8(1)
+ 257 0074 8093 0000 		sts byte.1780,r24
+  68:receive.c     ****             if(i == 5)
+ 258               		.stabn	68,0,68,.LM30-.LFBB3
+ 259               	.LM30:
+ 260 0078 1530      		cpi r17,lo8(5)
+ 261 007a 01F4      		brne .L20
+  59:receive.c     ****           ax_counter = 0;
+ 262               		.stabn	68,0,59,.LM31-.LFBB3
+ 263               	.LM31:
+ 264 007c 00E0      		ldi r16,lo8(0)
+  66:receive.c     ****             flag = 1;
+ 265               		.stabn	68,0,66,.LM32-.LFBB3
+ 266               	.LM32:
+ 267 007e DD24      		clr r13
+ 268 0080 D394      		inc r13
+  69:receive.c     ****               i++;
+ 269               		.stabn	68,0,69,.LM33-.LFBB3
+ 270               	.LM33:
+ 271 0082 16E0      		ldi r17,lo8(6)
+ 272 0084 00C0      		rjmp .L13
+ 273               	.L17:
+  59:receive.c     ****           ax_counter = 0;
+ 274               		.stabn	68,0,59,.LM34-.LFBB3
+ 275               	.LM34:
+ 276 0086 00E0      		ldi r16,lo8(0)
+ 277               	.L13:
+  45:receive.c     ****     for(i = 0; i < 8; i++)
+ 278               		.stabn	68,0,45,.LM35-.LFBB3
+ 279               	.LM35:
+ 280 0088 1F5F      		subi r17,lo8(-(1))
+ 281 008a 1830      		cpi r17,lo8(8)
+ 282 008c 00F0      		brlo .L15
+ 283               		.stabn	68,0,78,.LM36-.LFBB3
+ 284               	.LM36:
+ 285 008e FE01      		movw r30,r28
+ 286 0090 EE0D      		add r30,r14
+ 287 0092 F11D      		adc r31,__zero_reg__
+ 288 0094 8091 0000 		lds r24,byte.1780
+ 289 0098 8083      		st Z,r24
+ 290 009a FE2C      		mov r15,r14
+ 291 009c F394      		inc r15
+  79:receive.c     ****     
+  80:receive.c     ****   }while(!flag);
+ 292               		.stabn	68,0,80,.LM37-.LFBB3
+ 293               	.LM37:
+ 294 009e DD20      		tst r13
+ 295 00a0 01F0      		breq .L19
+  81:receive.c     ****   
+  82:receive.c     ****   if(size < 4)
+ 296               		.stabn	68,0,82,.LM38-.LFBB3
+ 297               	.LM38:
+GAS LISTING /tmp/ccqU6uMF.s 			page 8
+
+
+ 298 00a2 83E0      		ldi r24,lo8(3)
+ 299 00a4 8F15      		cp r24,r15
+ 300 00a6 00F4      		brsh .L20
+  83:receive.c     ****     return 0;
+  84:receive.c     ****   
+  85:receive.c     ****   memcpy(&crc_in_packet, data + size - 3, sizeof(uint16_t));
+ 301               		.stabn	68,0,85,.LM39-.LFBB3
+ 302               	.LM39:
+ 303 00a8 FE01      		movw r30,r28
+ 304 00aa EF0D      		add r30,r15
+ 305 00ac F11D      		adc r31,__zero_reg__
+ 306 00ae 3397      		sbiw r30,3
+ 307 00b0 0081      		ld r16,Z
+ 308 00b2 1181      		ldd r17,Z+1
+  86:receive.c     ****   crc = calculate_crc_16(data, size - 3);
+ 309               		.stabn	68,0,86,.LM40-.LFBB3
+ 310               	.LM40:
+ 311 00b4 6E2D      		mov r22,r14
+ 312 00b6 6250      		subi r22,lo8(-(-2))
+ 313 00b8 CE01      		movw r24,r28
+ 314 00ba 00D0      		rcall calculate_crc_16
+  87:receive.c     ****   if (crc_in_packet == crc)
+ 315               		.stabn	68,0,87,.LM41-.LFBB3
+ 316               	.LM41:
+ 317 00bc 0817      		cp r16,r24
+ 318 00be 1907      		cpc r17,r25
+ 319 00c0 01F0      		breq .L14
+ 320               	.L20:
+  83:receive.c     ****     return 0;
+ 321               		.stabn	68,0,83,.LM42-.LFBB3
+ 322               	.LM42:
+ 323 00c2 FF24      		clr r15
+ 324               	.L14:
+  88:receive.c     ****     return size;
+  89:receive.c     ****   
+  90:receive.c     ****   //send_UART(data, size);
+  91:receive.c     ****   //send_UART("CRC fail\r", 9);
+  92:receive.c     ****   return 0;
+  93:receive.c     **** }
+ 325               		.stabn	68,0,93,.LM43-.LFBB3
+ 326               	.LM43:
+ 327 00c4 8F2D      		mov r24,r15
+ 328               	/* epilogue start */
+ 329 00c6 DF91      		pop r29
+ 330 00c8 CF91      		pop r28
+ 331 00ca 1F91      		pop r17
+ 332 00cc 0F91      		pop r16
+ 333 00ce FF90      		pop r15
+ 334 00d0 EF90      		pop r14
+ 335 00d2 DF90      		pop r13
+ 336 00d4 0895      		ret
+ 337               		.size	cc1020_receive_packet, .-cc1020_receive_packet
+ 338               		.stabs	"byte:V(6,2)",38,0,27,byte.1780
+ 339               		.stabs	"i:r(6,2)",64,0,28,17
+ 340               		.stabs	"flag:r(6,2)",64,0,28,13
+ 341               		.stabs	"ax_counter:r(6,2)",64,0,29,16
+ 342               		.stabn	192,0,0,.LFBB3-.LFBB3
+GAS LISTING /tmp/ccqU6uMF.s 			page 9
+
+
+ 343               		.stabn	224,0,0,.Lscope3-.LFBB3
+ 344               	.Lscope3:
+ 345               		.stabs	"",36,0,0,.Lscope3-.LFBB3
+ 346               		.stabd	78,0,0
+ 347               		.lcomm byte.1780,1
+ 348               		.stabs	"",100,0,0,.Letext0
+ 349               	.Letext0:
+GAS LISTING /tmp/ccqU6uMF.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 receive.c
+     /tmp/ccqU6uMF.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccqU6uMF.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccqU6uMF.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccqU6uMF.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccqU6uMF.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccqU6uMF.s:93     .text:0000000000000000 cc1020_init_dio
+     /tmp/ccqU6uMF.s:119    .text:0000000000000006 cc1020_receive_bit
+     /tmp/ccqU6uMF.s:157    .text:0000000000000014 cc1020_receive_packet
+                             .bss:0000000000000000 byte.1780
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+calculate_crc_16
